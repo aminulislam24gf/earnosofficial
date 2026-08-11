@@ -3,8 +3,6 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#754be8">
-
 <title>EARNOS</title>
 
 <style>
@@ -15,12 +13,14 @@
 }
 
 :root{
-  --bg:#f7f3ff;
+  --bg:#f7f4ff;
   --card:#ffffff;
   --text:#17151f;
-  --muted:#918b9d;
+  --muted:#918d9d;
   --purple:#754be8;
-  --purple2:#9b6cff;
+  --purple2:#6840dc;
+  --soft:#eee8ff;
+  --green:#25c98a;
 }
 
 body{
@@ -40,7 +40,7 @@ button{
 .app{
   max-width:480px;
   margin:auto;
-  padding:20px 18px 115px;
+  padding:20px 18px 110px;
 }
 
 /* HEADER */
@@ -49,7 +49,7 @@ button{
   display:flex;
   justify-content:space-between;
   align-items:center;
-  margin-bottom:27px;
+  margin-bottom:42px;
 }
 
 .brand{
@@ -66,179 +66,171 @@ button{
   width:48px;
   height:48px;
   border-radius:17px;
-  background:linear-gradient(145deg,#a477ff,#6b43df);
-  color:white;
+  background:linear-gradient(145deg,#a477ff,#6843dc);
+  color:#fff;
   display:grid;
   place-items:center;
   font-size:20px;
   font-weight:800;
-  box-shadow:0 10px 25px #7048df33;
+  box-shadow:0 10px 25px rgba(112,72,225,.25);
   position:relative;
 }
 
 .online{
   position:absolute;
-  right:-2px;
-  bottom:-2px;
   width:13px;
   height:13px;
-  border-radius:50%;
-  background:#2bd77f;
+  right:-2px;
+  bottom:-2px;
+  background:#28d495;
   border:3px solid var(--bg);
+  border-radius:50%;
 }
 
-/* HERO */
+/* HOME */
+
+.page{
+  display:none;
+  animation:pageIn .35s ease;
+}
+
+.page.active{
+  display:block;
+}
+
+@keyframes pageIn{
+  from{
+    opacity:0;
+    transform:translateY(8px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
 
 .hello{
-  font-size:14px;
-  color:#898296;
-  margin-bottom:5px;
+  color:#918d9d;
+  font-size:15px;
+  margin-bottom:7px;
 }
 
-h1{
-  font-size:39px;
-  line-height:1.08;
-  letter-spacing:-1.8px;
-  margin-bottom:22px;
+.hero-title{
+  font-size:42px;
+  line-height:1.04;
+  letter-spacing:-2px;
+  margin-bottom:25px;
 }
 
-.gradient-text{
+.hero-title span{
   color:var(--purple);
-  position:relative;
 }
-
-.spark{
-  position:absolute;
-  font-size:17px;
-  color:#8c8b94;
-  animation:twinkle 1.8s infinite;
-}
-
-.s1{
-  left:25px;
-  top:-12px;
-}
-
-.s2{
-  right:12px;
-  top:8px;
-  animation-delay:.7s;
-}
-
-/* BALANCE */
 
 .balance{
   position:relative;
   overflow:hidden;
+  background:linear-gradient(135deg,#9060f5,#6534d9);
   color:white;
   border-radius:30px;
-  padding:25px 24px 22px;
-  background:
-    linear-gradient(
-      135deg,
-      #9569ff 0%,
-      #7444e8 52%,
-      #5b35ce 100%
-    );
-  box-shadow:0 18px 40px #6c45d933;
-  margin-bottom:16px;
-  min-height:265px;
+  padding:27px;
+  min-height:320px;
+  box-shadow:0 20px 40px rgba(103,55,220,.25);
+  margin-bottom:18px;
 }
 
 .balance:before{
   content:"";
   position:absolute;
-  width:230px;
-  height:230px;
+  width:250px;
+  height:250px;
   border-radius:50%;
-  right:-95px;
-  top:-105px;
-  background:#ffffff18;
+  right:-100px;
+  top:-100px;
+  background:rgba(255,255,255,.10);
 }
 
 .balance:after{
   content:"";
   position:absolute;
-  width:150px;
-  height:150px;
+  width:180px;
+  height:180px;
   border-radius:50%;
-  right:-20px;
-  bottom:-95px;
-  background:#ffffff10;
+  right:-70px;
+  bottom:-120px;
+  background:rgba(255,255,255,.08);
 }
 
 .balance-label{
-  font-size:15px;
-  opacity:.82;
+  font-size:16px;
+  opacity:.85;
+  position:relative;
+  z-index:2;
 }
 
 .amount{
   font-size:48px;
   font-weight:850;
   letter-spacing:-2px;
-  margin:6px 0 2px;
+  margin:7px 0;
+  position:relative;
+  z-index:2;
 }
 
 .goal{
-  font-size:14px;
-  opacity:.88;
+  font-size:15px;
+  opacity:.9;
+  position:relative;
+  z-index:2;
 }
-
-/* CHARACTER */
 
 .rocket{
   position:absolute;
-  right:30px;
-  top:30px;
-  width:92px;
-  height:92px;
+  right:42px;
+  top:75px;
+  width:105px;
+  height:105px;
   border-radius:50%;
-  background:#ffffff1c;
+  background:rgba(255,255,255,.12);
   display:grid;
   place-items:center;
-  font-size:52px;
-
-  animation:
-    float 3.2s ease-in-out infinite;
+  font-size:58px;
+  z-index:2;
+  animation:float 3s ease-in-out infinite;
 }
 
-/* PROGRESS */
+@keyframes float{
+  0%,100%{transform:translateY(0) rotate(-2deg)}
+  50%{transform:translateY(-8px) rotate(2deg)}
+}
+
+.progress-area{
+  position:absolute;
+  left:27px;
+  right:27px;
+  bottom:27px;
+  z-index:2;
+}
 
 .progress-label{
-  position:absolute;
-  left:24px;
-  right:24px;
-  bottom:49px;
-
   display:flex;
   justify-content:space-between;
-
-  font-size:13px;
+  font-size:14px;
+  margin-bottom:9px;
 }
 
 .progress{
-  position:absolute;
-  left:24px;
-  right:24px;
-  bottom:28px;
-
-  height:10px;
-
-  background:#ffffff2e;
-  border-radius:99px;
+  height:11px;
+  border-radius:20px;
+  background:rgba(255,255,255,.22);
   overflow:hidden;
 }
 
-.progress i{
-  display:block;
+.progress-fill{
   height:100%;
   width:0%;
-
-  border-radius:99px;
-  background:#ffffffb8;
-
-  transition:
-    width .7s ease;
+  border-radius:20px;
+  background:#fff;
+  transition:width .7s ease;
 }
 
 /* BONUS */
@@ -246,27 +238,22 @@ h1{
 .bonus{
   background:white;
   border-radius:25px;
-  padding:16px 17px;
-
+  padding:18px;
   display:flex;
   align-items:center;
-  gap:13px;
-
-  box-shadow:0 8px 25px #39256d0c;
-
-  margin-bottom:17px;
+  gap:15px;
+  box-shadow:0 7px 25px rgba(40,25,80,.06);
+  margin-bottom:18px;
 }
 
 .bonus-icon{
-  width:58px;
-  height:58px;
-  border-radius:18px;
-  background:#fff1c8;
-
+  width:70px;
+  height:70px;
+  border-radius:20px;
+  background:#fff0bd;
   display:grid;
   place-items:center;
-
-  font-size:31px;
+  font-size:40px;
 }
 
 .bonus-info{
@@ -274,32 +261,26 @@ h1{
 }
 
 .bonus-title{
-  font-size:17px;
+  font-size:18px;
   font-weight:800;
-  margin-bottom:3px;
+  margin-bottom:4px;
 }
 
 .bonus-sub{
   font-size:13px;
-  color:var(--muted);
+  color:#9995a2;
 }
 
 .claim{
-  background:#17131d;
+  background:#17151f;
   color:white;
-  border-radius:15px;
-  padding:13px 18px;
-  font-weight:800;
-
-  transition:.2s;
+  padding:14px 19px;
+  border-radius:17px;
+  font-weight:750;
 }
 
 .claim:active{
   transform:scale(.94);
-}
-
-.claim.claimed{
-  background:#35a76b;
 }
 
 /* STATS */
@@ -307,38 +288,32 @@ h1{
 .stats{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:10px;
-
-  margin:3px 0 26px;
+  gap:12px;
+  margin:15px 0 28px;
 }
 
 .stat{
   background:white;
-  border-radius:23px;
-
-  padding:14px 7px;
-
+  border-radius:25px;
+  padding:18px 8px;
   text-align:center;
-
-  box-shadow:0 7px 22px #39256d08;
-
-  min-height:105px;
+  box-shadow:0 6px 22px rgba(40,25,80,.05);
 }
 
 .stat-icon{
-  font-size:25px;
-  margin-bottom:4px;
+  font-size:30px;
+  margin-bottom:7px;
 }
 
 .stat-value{
-  font-size:19px;
-  font-weight:850;
+  font-size:20px;
+  font-weight:800;
 }
 
 .stat-label{
-  font-size:11px;
-  color:var(--muted);
-  margin-top:2px;
+  color:#9995a2;
+  font-size:12px;
+  margin-top:3px;
 }
 
 /* SECTION */
@@ -347,43 +322,32 @@ h1{
   display:flex;
   justify-content:space-between;
   align-items:center;
-
-  margin:0 3px 12px;
+  margin:8px 4px 14px;
 }
 
 .section-title{
-  font-size:22px;
-  font-weight:850;
+  font-size:27px;
+  font-weight:800;
+  letter-spacing:-1px;
 }
 
-.see{
+.see-all{
   color:var(--purple);
-  font-size:14px;
-  font-weight:750;
-  background:none;
+  font-weight:700;
 }
 
-/* TASK */
+/* TASK CARD */
 
 .task{
   background:white;
-  border-radius:24px;
-
-  padding:16px;
-  margin-bottom:12px;
-
+  border-radius:25px;
+  padding:18px;
+  margin-bottom:13px;
   display:flex;
   align-items:center;
-  gap:13px;
-
-  box-shadow:0 8px 25px #39256d0b;
-
-  transition:
-    transform .2s,
-    box-shadow .2s;
-
-  position:relative;
-  overflow:hidden;
+  gap:14px;
+  box-shadow:0 7px 25px rgba(40,25,80,.055);
+  transition:.2s;
 }
 
 .task:active{
@@ -391,33 +355,19 @@ h1{
 }
 
 .task-icon{
-  width:56px;
-  height:56px;
-
-  border-radius:18px;
-
+  width:68px;
+  height:68px;
+  border-radius:20px;
   display:grid;
   place-items:center;
-
-  font-size:28px;
-  flex:none;
+  font-size:35px;
+  flex-shrink:0;
 }
 
-.i1{
-  background:#eee5ff;
-}
-
-.i2{
-  background:#e5f4ff;
-}
-
-.i3{
-  background:#fff2ce;
-}
-
-.i4{
-  background:#dff8ed;
-}
+.purple{background:#eee5ff}
+.blue{background:#e4f4ff}
+.yellow{background:#fff3ce}
+.green{background:#def8ee}
 
 .task-info{
   flex:1;
@@ -425,417 +375,451 @@ h1{
 }
 
 .task-title{
-  font-size:16px;
+  font-size:17px;
   font-weight:800;
-  margin-bottom:4px;
+  margin-bottom:5px;
 }
 
-.task-time{
+.task-meta{
+  color:#9995a2;
   font-size:12px;
-  color:var(--muted);
-  white-space:nowrap;
 }
 
 .hot{
-  color:#e56b3b;
-  margin-left:4px;
+  color:#db7045;
+  margin-left:5px;
 }
 
 .reward{
+  color:#6541c9;
+  font-size:18px;
   font-weight:850;
-  color:#6540d4;
   white-space:nowrap;
-  font-size:16px;
+}
+
+.open-task{
+  margin-top:7px;
+  color:var(--purple);
+  font-size:12px;
+  font-weight:700;
 }
 
 /* STREAK */
 
 .streak{
+  margin-top:20px;
+  border-radius:28px;
+  padding:25px 20px;
   color:white;
-
-  border-radius:27px;
-
-  padding:20px;
-
-  margin-top:22px;
-
+  background:linear-gradient(135deg,#6532d7,#7d4af0);
   position:relative;
   overflow:hidden;
-
-  background:
-    linear-gradient(
-      135deg,
-      #5a31c4,
-      #773fe8
-    );
-
-  box-shadow:0 15px 35px #643bdc2c;
 }
 
-.streak h3{
-  font-size:20px;
-  margin-bottom:4px;
+.streak:after{
+  content:"🔥";
+  position:absolute;
+  right:20px;
+  top:20px;
+  font-size:70px;
+  opacity:.13;
+}
+
+.streak h2{
+  font-size:24px;
+  margin-bottom:5px;
 }
 
 .streak p{
-  font-size:13px;
-  opacity:.8;
-}
-
-.flame{
-  position:absolute;
-  right:18px;
-  top:12px;
-
-  font-size:60px;
-  opacity:.16;
+  color:#ddd0ff;
+  font-size:14px;
+  line-height:1.4;
+  max-width:290px;
 }
 
 .days{
   display:flex;
   justify-content:space-between;
-  margin-top:17px;
+  margin-top:20px;
 }
 
 .day{
-  text-align:center;
-  font-size:10px;
-  opacity:.55;
-}
-
-.day b{
+  width:37px;
+  height:37px;
+  border-radius:50%;
+  background:rgba(255,255,255,.10);
   display:grid;
   place-items:center;
-
-  width:34px;
-  height:34px;
-
-  border-radius:50%;
-
-  background:#ffffff18;
-
-  margin-bottom:5px;
-
-  font-size:15px;
+  font-weight:700;
+  color:#d5c6ff;
 }
 
 .day.done{
-  opacity:1;
-}
-
-.day.done b{
   background:white;
-  color:#6a42d9;
+  color:#7143dd;
 }
 
-/* FAB */
+/* TASKS PAGE */
+
+.page-heading{
+  font-size:34px;
+  letter-spacing:-1.5px;
+  margin-bottom:8px;
+}
+
+.page-sub{
+  color:#908b9a;
+  margin-bottom:22px;
+}
+
+.filter-row{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding-bottom:5px;
+  margin-bottom:20px;
+}
+
+.filter{
+  padding:10px 17px;
+  border-radius:30px;
+  background:white;
+  color:#817c8b;
+  white-space:nowrap;
+}
+
+.filter.active{
+  background:var(--purple);
+  color:white;
+}
+
+/* WALLET */
+
+.wallet-card{
+  background:linear-gradient(135deg,#8d5bf3,#6535d9);
+  color:white;
+  border-radius:28px;
+  padding:25px;
+  min-height:190px;
+  box-shadow:0 18px 35px rgba(103,55,220,.25);
+  margin:20px 0;
+}
+
+.wallet-label{
+  opacity:.8;
+}
+
+.wallet-money{
+  font-size:42px;
+  font-weight:850;
+  margin:8px 0 20px;
+}
+
+.withdraw{
+  background:white;
+  color:#5e39c8;
+  border-radius:14px;
+  padding:11px 17px;
+  font-weight:800;
+}
+
+.history-title{
+  font-size:21px;
+  font-weight:800;
+  margin:25px 0 12px;
+}
+
+.history{
+  background:white;
+  border-radius:20px;
+  padding:17px;
+  display:flex;
+  align-items:center;
+  gap:13px;
+  margin-bottom:10px;
+}
+
+.history-icon{
+  width:45px;
+  height:45px;
+  border-radius:14px;
+  background:#e9ddff;
+  display:grid;
+  place-items:center;
+}
+
+.history-info{
+  flex:1;
+}
+
+.history-name{
+  font-weight:750;
+}
+
+.history-date{
+  color:#9995a2;
+  font-size:12px;
+  margin-top:3px;
+}
+
+.history-amount{
+  color:#36ad7e;
+  font-weight:800;
+}
+
+/* PROFILE */
+
+.profile-card{
+  background:white;
+  border-radius:28px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 7px 25px rgba(40,25,80,.05);
+}
+
+.profile-avatar{
+  width:85px;
+  height:85px;
+  margin:auto;
+  border-radius:28px;
+  background:linear-gradient(145deg,#a477ff,#6843dc);
+  color:white;
+  display:grid;
+  place-items:center;
+  font-size:34px;
+  font-weight:800;
+}
+
+.profile-name{
+  font-size:23px;
+  font-weight:850;
+  margin-top:12px;
+}
+
+.profile-email{
+  color:#9995a2;
+  font-size:13px;
+  margin-top:3px;
+}
+
+.settings{
+  background:white;
+  border-radius:24px;
+  margin-top:15px;
+  overflow:hidden;
+}
+
+.setting{
+  padding:19px;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  border-bottom:1px solid #f0edf5;
+}
+
+.setting:last-child{
+  border:0;
+}
+
+.setting-icon{
+  font-size:23px;
+}
+
+.setting-info{
+  flex:1;
+}
+
+.setting-title{
+  font-weight:700;
+}
+
+.setting-sub{
+  font-size:12px;
+  color:#9995a2;
+  margin-top:3px;
+}
+
+/* BOTTOM NAV */
+
+.bottom{
+  position:fixed;
+  bottom:0;
+  left:50%;
+  transform:translateX(-50%);
+  width:100%;
+  max-width:480px;
+  height:78px;
+  background:rgba(255,255,255,.94);
+  backdrop-filter:blur(18px);
+  border-top:1px solid #ece8f4;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:50;
+}
+
+.nav{
+  width:25%;
+  text-align:center;
+  color:#9a96a3;
+  font-size:12px;
+  font-weight:600;
+}
+
+.nav-icon{
+  font-size:23px;
+  margin-bottom:4px;
+}
+
+.nav.active{
+  color:var(--purple);
+}
+
+/* FLOAT BUTTON */
 
 .fab{
   position:fixed;
-  z-index:20;
-
+  z-index:60;
+  bottom:66px;
   left:50%;
-  bottom:68px;
-
   transform:translateX(-50%);
-
-  width:66px;
-  height:66px;
-
+  width:70px;
+  height:70px;
   border-radius:50%;
-
-  background:
-    linear-gradient(
-      145deg,
-      #905aff,
-      #6b3bdc
-    );
-
+  background:linear-gradient(145deg,#9058fa,#6939dc);
   color:white;
-
-  font-size:34px;
-
-  box-shadow:
-    0 10px 30px #6940db66;
-
-  border:4px solid var(--bg);
-
-  transition:.2s;
+  font-size:38px;
+  box-shadow:0 8px 25px rgba(104,55,220,.4);
+  border:5px solid var(--bg);
 }
 
 .fab:active{
   transform:translateX(-50%) scale(.9);
 }
 
-/* NAV */
+/* MODAL */
 
-.bottom{
+.overlay{
   position:fixed;
-  z-index:15;
+  inset:0;
+  background:rgba(15,12,24,.48);
+  backdrop-filter:blur(7px);
+  z-index:100;
+  display:none;
+  align-items:flex-end;
+  justify-content:center;
+}
 
-  bottom:0;
-  left:0;
-  right:0;
+.overlay.show{
+  display:flex;
+}
 
+.modal{
+  width:100%;
   max-width:480px;
-  margin:auto;
+  background:#fff;
+  border-radius:32px 32px 0 0;
+  padding:27px 22px 35px;
+  animation:modalUp .3s ease;
+}
 
-  background:#fffffff2;
+@keyframes modalUp{
+  from{transform:translateY(100%)}
+  to{transform:translateY(0)}
+}
 
-  backdrop-filter:blur(18px);
+.close{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#f1eef7;
+  float:right;
+  font-size:22px;
+}
 
+.modal-icon{
+  clear:both;
+  width:78px;
+  height:78px;
+  border-radius:23px;
+  background:#eee5ff;
   display:grid;
-  grid-template-columns:repeat(4,1fr);
-
-  padding:10px 7px 17px;
-
-  border-top:1px solid #eee9f7;
+  place-items:center;
+  font-size:42px;
+  margin-top:20px;
 }
 
-.nav-item{
-  text-align:center;
-
-  color:#9993a2;
-
-  font-size:11px;
-  font-weight:600;
-
-  background:none;
+.modal h2{
+  font-size:27px;
+  margin:15px 0 7px;
 }
 
-.nav-icon{
-  font-size:23px;
-  height:28px;
-  line-height:26px;
-  margin-bottom:3px;
+.modal-meta{
+  color:#918d9d;
+  margin-bottom:20px;
 }
 
-.nav-item.active{
-  color:#6b42dc;
+.modal-desc{
+  color:#5e5968;
+  line-height:1.55;
+  font-size:14px;
+}
+
+.start{
+  width:100%;
+  background:linear-gradient(135deg,#8050ed,#6537d8);
+  color:white;
+  padding:17px;
+  border-radius:18px;
+  font-weight:800;
+  margin-top:23px;
+  font-size:16px;
 }
 
 /* TOAST */
 
 .toast{
   position:fixed;
-
-  z-index:50;
-
   left:50%;
-  bottom:145px;
-
-  transform:
-    translate(-50%,20px);
-
-  background:#19151f;
+  bottom:100px;
+  transform:translate(-50%,20px);
+  background:#17151f;
   color:white;
-
-  padding:12px 18px;
-
-  border-radius:14px;
-
-  font-size:13px;
-  font-weight:700;
-
+  padding:13px 19px;
+  border-radius:16px;
+  z-index:200;
   opacity:0;
-
   pointer-events:none;
-
   transition:.3s;
-
   white-space:nowrap;
+  box-shadow:0 10px 30px rgba(0,0,0,.2);
 }
 
 .toast.show{
   opacity:1;
-
-  transform:
-    translate(-50%,0);
-}
-
-/* MODAL */
-
-.modal-bg{
-  position:fixed;
-
-  inset:0;
-
-  background:#130d1d66;
-
-  backdrop-filter:blur(5px);
-
-  z-index:40;
-
-  display:none;
-
-  align-items:flex-end;
-  justify-content:center;
-}
-
-.modal-bg.show{
-  display:flex;
-}
-
-.modal{
-  width:min(480px,100%);
-
-  background:white;
-
-  border-radius:30px 30px 0 0;
-
-  padding:22px 20px 30px;
-
-  animation:slideUp .3s ease;
-}
-
-.modal-top{
-  display:flex;
-
-  justify-content:space-between;
-  align-items:center;
-
-  margin-bottom:18px;
-}
-
-.modal h2{
-  font-size:22px;
-}
-
-.close{
-  width:35px;
-  height:35px;
-
-  border-radius:50%;
-
-  background:#f0edf5;
-
-  font-size:20px;
-}
-
-.detail-icon{
-  width:64px;
-  height:64px;
-
-  border-radius:20px;
-
-  display:grid;
-  place-items:center;
-
-  font-size:32px;
-
-  margin-bottom:13px;
-}
-
-.modal p{
-  line-height:1.5;
-}
-
-.detail-meta{
-  color:var(--muted);
-  font-size:13px;
-  margin:8px 0 18px;
-}
-
-.start{
-  width:100%;
-
-  padding:15px;
-
-  border-radius:16px;
-
-  background:var(--purple);
-  color:white;
-
-  font-weight:800;
+  transform:translate(-50%,0);
 }
 
 /* CONFETTI */
 
 .confetti{
   position:fixed;
-
-  z-index:60;
-
-  font-size:22px;
-
+  width:8px;
+  height:8px;
+  top:45%;
+  left:50%;
+  z-index:300;
   pointer-events:none;
-
-  animation:
-    confetti 900ms ease-out forwards;
-}
-
-/* ANIMATIONS */
-
-@keyframes float{
-
-  0%,100%{
-    transform:translateY(0) rotate(-3deg);
-  }
-
-  50%{
-    transform:translateY(-8px) rotate(3deg);
-  }
-}
-
-@keyframes twinkle{
-
-  0%,100%{
-    opacity:.25;
-    transform:scale(.8);
-  }
-
-  50%{
-    opacity:1;
-    transform:scale(1.15);
-  }
-}
-
-@keyframes slideUp{
-
-  from{
-    transform:translateY(100%);
-  }
-
-  to{
-    transform:translateY(0);
-  }
+  animation:confetti 1s ease-out forwards;
 }
 
 @keyframes confetti{
-
-  from{
-    transform:
-      translate(0,0)
-      rotate(0);
-
-    opacity:1;
-  }
-
   to{
-    transform:
-      translate(var(--x),var(--y))
-      rotate(500deg);
-
+    transform:translate(
+      calc((var(--x) - .5) * 400px),
+      calc((var(--y) - .5) * 500px)
+    ) rotate(720deg);
     opacity:0;
-  }
-}
-
-@media(max-width:360px){
-
-  h1{
-    font-size:34px;
-  }
-
-  .amount{
-    font-size:42px;
-  }
-
-  .task-time{
-    font-size:11px;
-  }
-
-  .reward{
-    font-size:14px;
   }
 }
 </style>
@@ -845,1046 +829,447 @@ h1{
 
 <main class="app">
 
-<header class="top">
+<!-- HOME -->
 
-<div class="brand">
-EARNOS<span>.</span>
-</div>
+<section id="homePage" class="page active">
 
-<div class="avatar">
-E
-<div class="online"></div>
-</div>
+  <div class="top">
+    <div class="brand">EARNOS<span>.</span></div>
+    <div class="avatar">
+      E
+      <div class="online"></div>
+    </div>
+  </div>
 
-</header>
+  <div class="hello">Good morning 👋</div>
 
+  <h1 class="hero-title">
+    Let's earn<br>
+    <span>something today.</span>
+  </h1>
 
-<div class="hello">
-Good morning 👋
-</div>
+  <section class="balance">
 
+    <div class="balance-label">Today's earning</div>
 
-<h1>
+    <div class="amount" id="todayAmount">$0.00</div>
 
-Let's earn<br>
+    <div class="goal">🎯 Daily goal: $10.00</div>
 
-<span class="gradient-text">
-something today.
+    <div class="rocket">👨‍🚀</div>
 
-<span class="spark s1">✦</span>
-<span class="spark s2">✦</span>
+    <div class="progress-area">
+      <div class="progress-label">
+        <span>Daily progress</span>
+        <span id="progressText">0%</span>
+      </div>
 
-</span>
+      <div class="progress">
+        <div class="progress-fill" id="progressFill"></div>
+      </div>
+    </div>
 
-</h1>
+  </section>
 
+  <section class="bonus">
 
-<!-- BALANCE -->
+    <div class="bonus-icon">🎁</div>
 
-<section class="balance">
+    <div class="bonus-info">
+      <div class="bonus-title" id="bonusTitle">
+        Daily Bonus Ready!
+      </div>
 
-<div class="balance-label">
-Today's earning
-</div>
+      <div class="bonus-sub">
+        Come back every day for rewards
+      </div>
+    </div>
 
-<div
-class="amount"
-id="amount">
-$0.00
-</div>
+    <button class="claim" id="claimBtn" onclick="claimBonus()">
+      Claim
+    </button>
 
-<div class="goal">
-🎯 Daily goal: $10.00
-</div>
+  </section>
 
+  <div class="stats">
 
-<div class="rocket">
-👨‍🚀
-</div>
+    <div class="stat">
+      <div class="stat-icon">🔥</div>
+      <div class="stat-value" id="streakValue">1 day</div>
+      <div class="stat-label">Streak</div>
+    </div>
 
+    <div class="stat">
+      <div class="stat-icon">⚡</div>
+      <div class="stat-value" id="xpValue">0 XP</div>
+      <div class="stat-label">Experience</div>
+    </div>
 
-<div class="progress-label">
+    <div class="stat">
+      <div class="stat-icon">🏆</div>
+      <div class="stat-value">Level 1</div>
+      <div class="stat-label">Your level</div>
+    </div>
 
-<span>
-Daily progress
-</span>
+  </div>
 
-<b id="percent">
-0%
-</b>
+  <div class="section-head">
+    <div class="section-title">Recommended for you</div>
+    <button class="see-all" onclick="showPage('tasks')">
+      See all →
+    </button>
+  </div>
 
-</div>
+  <div id="homeTasks"></div>
 
+  <section class="streak">
 
-<div class="progress">
+    <h2>🔥 Keep your streak alive!</h2>
 
-<i id="progress"></i>
+    <p>
+      Complete your daily activity to continue your streak.
+    </p>
 
-</div>
+    <div class="days">
+      <div class="day done">✓</div>
+      <div class="day">T</div>
+      <div class="day">W</div>
+      <div class="day">T</div>
+      <div class="day">F</div>
+      <div class="day">S</div>
+      <div class="day">S</div>
+    </div>
 
-</section>
-
-
-<!-- BONUS -->
-
-<section class="bonus">
-
-<div class="bonus-icon">
-🎁
-</div>
-
-<div class="bonus-info">
-
-<div class="bonus-title">
-Daily Bonus Ready!
-</div>
-
-<div class="bonus-sub">
-Come back every day for rewards
-</div>
-
-</div>
-
-<button
-class="claim"
-id="claimBtn">
-
-Claim
-
-</button>
-
-</section>
-
-
-<!-- STATS -->
-
-<section class="stats">
-
-<div class="stat">
-
-<div class="stat-icon">
-🔥
-</div>
-
-<div
-class="stat-value"
-id="streak">
-1 day
-</div>
-
-<div class="stat-label">
-Streak
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-icon">
-⚡
-</div>
-
-<div
-class="stat-value"
-id="xp">
-0 XP
-</div>
-
-<div class="stat-label">
-Experience
-</div>
-
-</div>
-
-
-<div class="stat">
-
-<div class="stat-icon">
-🏆
-</div>
-
-<div
-class="stat-value"
-id="level">
-Level 1
-</div>
-
-<div class="stat-label">
-Your level
-</div>
-
-</div>
+  </section>
 
 </section>
-
-
-<!-- TASK HEADER -->
-
-<div class="section-head">
-
-<div class="section-title">
-Recommended for you
-</div>
-
-<button
-class="see"
-id="seeAll">
-
-See all →
-
-</button>
-
-</div>
 
 
 <!-- TASKS -->
 
-<div id="tasks">
+<section id="tasksPage" class="page">
+
+  <div class="top">
+    <div class="brand">EARNOS<span>.</span></div>
+    <div class="avatar">E</div>
+  </div>
+
+  <h1 class="page-heading">Tasks</h1>
+
+  <p class="page-sub">
+    Complete simple tasks and earn money.
+  </p>
+
+  <div class="filter-row">
+    <button class="filter active">All</button>
+    <button class="filter">Testing</button>
+    <button class="filter">Feedback</button>
+    <button class="filter">Translation</button>
+  </div>
+
+  <div id="allTasks"></div>
+
+</section>
 
 
-<article
-class="task"
-data-title="App Testing"
-data-reward="1.20"
-data-icon="🧪"
-data-class="i1"
-data-time="3 min • High demand">
+<!-- WALLET -->
 
-<div class="task-icon i1">
-🧪
-</div>
+<section id="walletPage" class="page">
 
-<div class="task-info">
+  <div class="top">
+    <div class="brand">EARNOS<span>.</span></div>
+    <div class="avatar">E</div>
+  </div>
 
-<div class="task-title">
-App Testing
-</div>
+  <h1 class="page-heading">Wallet</h1>
 
-<div class="task-time">
+  <p class="page-sub">
+    Your earnings and balance.
+  </p>
 
-3 min • High demand
+  <div class="wallet-card">
 
-<span class="hot">
-🔥 Hot
-</span>
+    <div class="wallet-label">Available balance</div>
 
-</div>
+    <div class="wallet-money" id="walletMoney">
+      $0.00
+    </div>
 
-</div>
+    <button class="withdraw" onclick="withdraw()">
+      Withdraw
+    </button>
 
-<div class="reward">
-+$1.20
-</div>
+  </div>
 
-</article>
+  <div class="history-title">Recent activity</div>
 
+  <div id="historyList">
 
-<article
-class="task"
-data-title="Product Feedback"
-data-reward="2.50"
-data-icon="📝"
-data-class="i2"
-data-time="7 min • Good match">
+    <div class="history">
 
-<div class="task-icon i2">
-📝
-</div>
+      <div class="history-icon">🎁</div>
 
-<div class="task-info">
+      <div class="history-info">
+        <div class="history-name">Welcome</div>
+        <div class="history-date">Today</div>
+      </div>
 
-<div class="task-title">
-Product Feedback
-</div>
+      <div class="history-amount">+$0.00</div>
 
-<div class="task-time">
-7 min • Good match
-</div>
+    </div>
 
-</div>
+  </div>
 
-<div class="reward">
-+$2.50
-</div>
-
-</article>
+</section>
 
 
-<article
-class="task"
-data-title="Translation"
-data-reward="4.00"
-data-icon="🌐"
-data-class="i3"
-data-time="15 min • Language task">
+<!-- PROFILE -->
 
-<div class="task-icon i3">
-🌐
-</div>
+<section id="profilePage" class="page">
 
-<div class="task-info">
+  <div class="top">
+    <div class="brand">EARNOS<span>.</span></div>
+    <div class="avatar">E</div>
+  </div>
 
-<div class="task-title">
-Translation
-</div>
+  <h1 class="page-heading">Profile</h1>
 
-<div class="task-time">
-15 min • Language task
-</div>
+  <div class="profile-card">
 
-</div>
+    <div class="profile-avatar">E</div>
 
-<div class="reward">
-+$4.00
-</div>
+    <div class="profile-name">EARNOS User</div>
 
-</article>
+    <div class="profile-email">
+      Member since today
+    </div>
 
+  </div>
 
-<article
-class="task"
-data-title="Content Review"
-data-reward="0.80"
-data-icon="🎥"
-data-class="i4"
-data-time="5 min • Quick task">
+  <div class="settings">
 
-<div class="task-icon i4">
-🎥
-</div>
+    <div class="setting">
+      <div class="setting-icon">🔔</div>
+      <div class="setting-info">
+        <div class="setting-title">Notifications</div>
+        <div class="setting-sub">Task and reward alerts</div>
+      </div>
+      <div>›</div>
+    </div>
 
-<div class="task-info">
+    <div class="setting">
+      <div class="setting-icon">🔒</div>
+      <div class="setting-info">
+        <div class="setting-title">Security</div>
+        <div class="setting-sub">Account security settings</div>
+      </div>
+      <div>›</div>
+    </div>
 
-<div class="task-title">
-Content Review
-</div>
+    <div class="setting">
+      <div class="setting-icon">❓</div>
+      <div class="setting-info">
+        <div class="setting-title">Help Center</div>
+        <div class="setting-sub">Get help with EARNOS</div>
+      </div>
+      <div>›</div>
+    </div>
 
-<div class="task-time">
-5 min • Quick task
-</div>
-
-</div>
-
-<div class="reward">
-+$0.80
-</div>
-
-</article>
-
-</div>
-
-
-<!-- STREAK -->
-
-<section class="streak">
-
-<div class="flame">
-🔥
-</div>
-
-<h3>
-🔥 Keep your streak alive!
-</h3>
-
-<p>
-Complete your daily activity to continue your streak.
-</p>
-
-
-<div class="days">
-
-<div class="day done">
-<b>✓</b>
-M
-</div>
-
-<div class="day">
-<b>T</b>
-T
-</div>
-
-<div class="day">
-<b>W</b>
-W
-</div>
-
-<div class="day">
-<b>T</b>
-T
-</div>
-
-<div class="day">
-<b>F</b>
-F
-</div>
-
-<div class="day">
-<b>S</b>
-S
-</div>
-
-<div class="day">
-<b>S</b>
-S
-</div>
-
-</div>
+  </div>
 
 </section>
 
 </main>
 
 
-<!-- FLOATING BUTTON -->
+<!-- FLOAT BUTTON -->
 
-<button
-class="fab"
-id="fab">
-
-+
-
+<button class="fab" onclick="showPage('tasks')">
+  +
 </button>
 
 
-<!-- NAVIGATION -->
+<!-- BOTTOM NAV -->
 
 <nav class="bottom">
 
-<button
-class="nav-item active"
-data-page="Home">
+  <div class="nav active" data-page="home" onclick="showPage('home')">
+    <div class="nav-icon">⌂</div>
+    Home
+  </div>
 
-<div class="nav-icon">
-⌂
-</div>
+  <div class="nav" data-page="tasks" onclick="showPage('tasks')">
+    <div class="nav-icon">✓</div>
+    Tasks
+  </div>
 
-Home
+  <div class="nav" data-page="wallet" onclick="showPage('wallet')">
+    <div class="nav-icon">▣</div>
+    Wallet
+  </div>
 
-</button>
-
-
-<button
-class="nav-item"
-data-page="Tasks">
-
-<div class="nav-icon">
-✓
-</div>
-
-Tasks
-
-</button>
-
-
-<button
-class="nav-item"
-data-page="Wallet">
-
-<div class="nav-icon">
-▣
-</div>
-
-Wallet
-
-</button>
-
-
-<button
-class="nav-item"
-data-page="Profile">
-
-<div class="nav-icon">
-●
-</div>
-
-Profile
-
-</button>
+  <div class="nav" data-page="profile" onclick="showPage('profile')">
+    <div class="nav-icon">●</div>
+    Profile
+  </div>
 
 </nav>
 
 
-<!-- TOAST -->
-
-<div
-class="toast"
-id="toast">
-</div>
-
-
 <!-- TASK MODAL -->
 
-<div
-class="modal-bg"
-id="modalBg">
+<div class="overlay" id="taskModal">
 
-<div class="modal">
+  <div class="modal">
 
-<div class="modal-top">
+    <button class="close" onclick="closeModal()">×</button>
 
-<h2 id="modalTitle">
-Task
-</h2>
+    <div class="modal-icon" id="modalIcon">🧪</div>
 
-<button
-class="close"
-id="close">
+    <h2 id="modalTitle">App Testing</h2>
 
-×
+    <div class="modal-meta" id="modalMeta">
+      3 min • High demand
+    </div>
 
-</button>
+    <p class="modal-desc" id="modalDescription">
+      Test a simple mobile app and provide useful feedback about your experience.
+    </p>
 
-</div>
+    <button class="start" id="startButton" onclick="startTask()">
+      Start Task • $1.20
+    </button>
 
-
-<div
-class="detail-icon"
-id="modalIcon">
-
-🧪
+  </div>
 
 </div>
 
 
-<p id="modalDesc">
-Complete this demo task to earn your reward.
-</p>
-
-
-<div
-class="detail-meta"
-id="modalMeta">
-</div>
-
-
-<button
-class="start"
-id="startTask">
-
-Start task
-
-</button>
-
-</div>
-
+<div class="toast" id="toast">
+  Success!
 </div>
 
 
 <script>
 
 /* =========================
-   EARNOS DEMO STATE
+   DATA
 ========================= */
 
-let state = JSON.parse(
-localStorage.getItem("earNosState")
-||
-'{"earning":0,"xp":0,"streak":1,"bonusClaimed":false}'
-);
+const tasks = [
+
+  {
+    id:1,
+    title:"App Testing",
+    icon:"🧪",
+    color:"purple",
+    time:"3 min",
+    meta:"High demand",
+    reward:1.20,
+    hot:true,
+    description:
+    "Test a simple mobile app and provide useful feedback about your experience."
+  },
+
+  {
+    id:2,
+    title:"Product Feedback",
+    icon:"📝",
+    color:"blue",
+    time:"7 min",
+    meta:"Good match",
+    reward:2.50,
+    hot:false,
+    description:
+    "Look at a product concept and tell us what you like, dislike and would improve."
+  },
+
+  {
+    id:3,
+    title:"Translation",
+    icon:"🌐",
+    color:"yellow",
+    time:"15 min",
+    meta:"Language task",
+    reward:4.00,
+    hot:false,
+    description:
+    "Translate a short piece of content accurately and naturally."
+  },
+
+  {
+    id:4,
+    title:"Content Review",
+    icon:"🎥",
+    color:"green",
+    time:"5 min",
+    meta:"Quick task",
+    reward:.80,
+    hot:false,
+    description:
+    "Review short content and provide a quick quality rating."
+  }
+
+];
+
+
+/* =========================
+   STATE
+========================= */
+
+let balance = 0;
+let today = 0;
+let xp = 0;
+let streak = 1;
 
 let selectedTask = null;
+let bonusClaimed = false;
 
 
 /* =========================
-   HELPERS
+   RENDER TASKS
 ========================= */
 
-function save(){
+function taskHTML(task){
 
-localStorage.setItem(
-"earNosState",
-JSON.stringify(state)
-);
+  return `
 
+    <div class="task" onclick="openTask(${task.id})">
+
+      <div class="task-icon ${task.color}">
+        ${task.icon}
+      </div>
+
+      <div class="task-info">
+
+        <div class="task-title">
+          ${task.title}
+        </div>
+
+        <div class="task-meta">
+          ${task.time} • ${task.meta}
+
+          ${
+            task.hot
+            ? '<span class="hot">🔥 Hot</span>'
+            : ''
+          }
+
+        </div>
+
+        <div class="open-task">
+          Tap to view →
+        </div>
+
+      </div>
+
+      <div class="reward">
+        +$${task.reward.toFixed(2)}
+      </div>
+
+    </div>
+
+  `;
 }
 
-
-function money(number){
-
-return "$" + number.toFixed(2);
-
-}
-
-
-function render(){
-
-/* MONEY */
-
-document.getElementById("amount")
-.textContent =
-money(state.earning);
-
-
-/* XP */
-
-document.getElementById("xp")
-.textContent =
-state.xp + " XP";
-
-
-/* STREAK */
-
-document.getElementById("streak")
-.textContent =
-state.streak +
-" day" +
-(state.streak === 1 ? "" : "s");
-
-
-/* LEVEL */
-
-const level =
-Math.floor(state.xp / 100) + 1;
-
-document.getElementById("level")
-.textContent =
-"Level " + level;
-
-
-/* PROGRESS */
-
-const percent =
-Math.min(
-100,
-(state.earning / 10) * 100
-);
-
-document.getElementById("percent")
-.textContent =
-Math.round(percent) + "%";
-
-document.getElementById("progress")
-.style.width =
-percent + "%";
-
-
-/* BONUS */
-
-if(state.bonusClaimed){
-
-const button =
-document.getElementById("claimBtn");
-
-button.textContent =
-"Claimed";
-
-button.classList.add("claimed");
-
-}
-
-}
-
-
-/* =========================
-   TOAST
-========================= */
-
-function toast(message){
-
-const toast =
-document.getElementById("toast");
-
-toast.textContent =
-message;
-
-toast.classList.add("show");
-
-clearTimeout(
-window.toastTimer
-);
-
-window.toastTimer =
-setTimeout(
-
-function(){
-
-toast.classList.remove("show");
-
-},
-
-2200
-
-);
-
-}
-
-
-/* =========================
-   CONFETTI
-========================= */
-
-function confetti(){
-
-const emojis = [
-"✨",
-"💜",
-"🎉",
-"💰",
-"⭐",
-"🎊"
-];
-
-for(
-let i = 0;
-i < 18;
-i++
-){
-
-const element =
-document.createElement("div");
-
-element.className =
-"confetti";
-
-element.textContent =
-emojis[
-Math.floor(
-Math.random() *
-emojis.length
-)
-];
-
-element.style.left =
-(45 + Math.random() * 10) +
-"%";
-
-element.style.top =
-"58%";
-
-element.style.setProperty(
-"--x",
-(Math.random() * 260 - 130) +
-"px"
-);
-
-element.style.setProperty(
-"--y",
-(Math.random() * -300 - 80) +
-"px"
-);
-
-document.body.appendChild(
-element
-);
-
-setTimeout(
-() => element.remove(),
-1000
-);
-
-}
-
-}
-
-
-/* =========================
-   INITIAL RENDER
-========================= */
-
-render();
-
-
-/* =========================
-   DAILY BONUS
-========================= */
-
-document
-.getElementById("claimBtn")
-.onclick = function(){
-
-if(state.bonusClaimed){
-
-toast(
-"🎁 Daily bonus already claimed"
-);
-
-return;
-
-}
-
-
-state.bonusClaimed =
-true;
-
-state.earning +=
-1;
-
-state.xp +=
-20;
-
-save();
-
-render();
-
-confetti();
-
-toast(
-"🎉 Bonus claimed! +$1.00"
-);
-
-};
-
-
-/* =========================
-   TASK MODALS
-========================= */
-
-document
-.querySelectorAll(".task")
-.forEach(
-
-function(task){
-
-task.onclick =
-function(){
-
-selectedTask =
-task;
-
-
-/* TITLE */
-
-document.getElementById(
-"modalTitle"
-).textContent =
-task.dataset.title;
-
-
-/* ICON */
-
-document.getElementById(
-"modalIcon"
-).textContent =
-task.dataset.icon;
-
-
-/* ICON COLOR */
-
-document.getElementById(
-"modalIcon"
-).className =
-"detail-icon " +
-task.dataset.class;
-
-
-/* DESCRIPTION */
-
-document.getElementById(
-"modalDesc"
-).textContent =
-"Complete this demo task and receive " +
-money(
-Number(
-task.dataset.reward
-)
-) +
-" in your EARNOS balance.";
-
-
-/* META */
-
-document.getElementById(
-"modalMeta"
-).textContent =
-task.dataset.time +
-" • Reward " +
-money(
-Number(
-task.dataset.reward
-)
-);
-
-
-/* BUTTON */
-
-document.getElementById(
-"startTask"
-).textContent =
-"Start task • " +
-money(
-Number(
-task.dataset.reward
-)
-);
-
-
-/* OPEN */
-
-document
-.getElementById("modalBg")
-.classList.add("show");
-
-};
-
-}
-
-);
-
-
-/* =========================
-   CLOSE MODAL
-========================= */
-
-document
-.getElementById("close")
-.onclick =
-function(){
-
-document
-.getElementById("modalBg")
-.classList.remove("show");
-
-};
-
-
-document
-.getElementById("modalBg")
-.onclick =
-function(event){
-
-if(
-event.target ===
-document.getElementById("modalBg")
-){
-
-document
-.getElementById("modalBg")
-.classList.remove("show");
-
-}
-
-};
-
-
-/* =========================
-   COMPLETE TASK
-========================= */
-
-document
-.getElementById("startTask")
-.onclick =
-function(){
-
-if(!selectedTask)
-return;
-
-
-const reward =
-Number(
-selectedTask.dataset.reward
-);
-
-
-/* ADD MONEY */
-
-state.earning +=
-reward;
-
-
-/* ADD XP */
-
-state.xp +=
-Math.round(
-reward * 10
-);
-
-
-/* STREAK */
-
-state.streak =
-Math.max(
-state.streak,
-2
-);
-
-
-/* SAVE */
-
-save();
-
-render();
-
-
-/* CLOSE */
-
-document
-.getElementById("modalBg")
-.classList.remove("show");
-
-
-/* EFFECT */
-
-confetti();
-
-
-toast(
-"✅ Task completed! +" +
-money(reward)
-);
-
-};
-
-
-/* =========================
-   FLOATING BUTTON
-========================= */
-
-document
-.getElementById("fab")
-.onclick =
-function(){
-
-toast(
-"✨ More earning options are coming soon"
-);
-
-};
-
-
-/* =========================
-   SEE ALL
-========================= */
-
-document
-.getElementById("seeAll")
-.onclick =
-function(){
-
-document
-.querySelectorAll(".task")
-.forEach(
-function(task){
-
-task.style.display =
-"flex";
-
-});
-
-toast(
-"Showing all recommended tasks"
-);
-
-};
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-document
-.querySelectorAll(".nav-item")
-.forEach(
-
-function(item){
-
-item.onclick =
-function(){
-
-document
-.querySelectorAll(".nav-item")
-.forEach(
-function(nav){
-
-nav.classList.remove(
-"acti
+  
