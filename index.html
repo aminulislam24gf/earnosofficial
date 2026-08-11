@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EARNOS</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f6f3ff;
+      color: #17151f;
+      min-height: 100vh;
+    }
+
+    .app {
+      max-width: 480px;
+      margin: auto;
+      padding: 22px 18px 100px;
+    }
+
+    .top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+    }
+
+    .brand {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .avatar {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #a884ff, #7055e8);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+    }
+
+    .hello {
+      font-size: 14px;
+      color: #777181;
+      margin-bottom: 5px;
+    }
+
+    h1 {
+      font-size: 29px;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+
+    .balance {
+      background: linear-gradient(135deg, #8f6cf3, #6849dc);
+      color: white;
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 12px 30px rgba(110, 78, 220, 0.22);
+      margin-bottom: 24px;
+    }
+
+    .balance-label {
+      opacity: 0.8;
+      font-size: 14px;
+    }
+
+    .amount {
+      font-size: 38px;
+      font-weight: 800;
+      margin: 8px 0;
+    }
+
+    .goal {
+      font-size: 13px;
+      opacity: 0.85;
+    }
+
+    .section-title {
+      font-size: 18px;
+      font-weight: 750;
+      margin: 25px 0 12px;
+    }
+
+    .task {
+      background: white;
+      border-radius: 20px;
+      padding: 17px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      box-shadow: 0 5px 18px rgba(35, 25, 70, 0.06);
+    }
+
+    .task-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 15px;
+      background: #eee9ff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .task-info {
+      flex: 1;
+    }
+
+    .task-title {
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
+
+    .task-time {
+      color: #898391;
+      font-size: 12px;
+    }
+
+    .reward {
+      font-weight: 800;
+      color: #6548d8;
+      white-space: nowrap;
+    }
+
+    .bottom {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      max-width: 480px;
+      margin: auto;
+      background: rgba(255,255,255,0.94);
+      backdrop-filter: blur(15px);
+      display: flex;
+      justify-content: space-around;
+      padding: 13px 8px 18px;
+      border-top: 1px solid #eeeaf5;
+    }
+
+    .nav-item {
+      font-size: 11px;
+      color: #8b8695;
+      text-align: center;
+    }
+
+    .nav-item.active {
+      color: #6949dd;
+      font-weight: 700;
+    }
+
+    .nav-icon {
+      font-size: 21px;
+      margin-bottom: 3px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="app">
+
+    <div class="top">
+      <div class="brand">EARNOS</div>
+      <div class="avatar">E</div>
+    </div>
+
+    <div class="hello">Good morning 👋</div>
+
+    <h1>Let's earn<br>something today.</h1>
+
+    <section class="balance">
+      <div class="balance-label">Today's earning</div>
+      <div class="amount">$0.00</div>
+      <div class="goal">🎯 Your daily goal: $10.00</div>
+    </section>
+
+    <div class="section-title">
+      Recommended for you
+    </div>
+
+    <div class="task">
+      <div class="task-icon">🧪</div>
+      <div class="task-info">
+        <div class="task-title">App Testing</div>
+        <div class="task-time">3 min • High demand</div>
+      </div>
+      <div class="reward">+$1.20</div>
+    </div>
+
+    <div class="task">
+      <div class="task-icon">📝</div>
+      <div class="task-info">
+        <div class="task-title">Product Feedback</div>
+        <div class="task-time">7 min • 88% match</div>
+      </div>
+      <div class="reward">+$2.50</div>
+    </div>
+
+    <div class="task">
+      <div class="task-icon">🌐</div>
+      <div class="task-info">
+        <div class="task-title">Translation</div>
+        <div class="task-time">15 min • 91% match</div>
+      </div>
+      <div class="reward">+$4.00</div>
+    </div>
+
+  </main>
+
+  <nav class="bottom">
+    <div class="nav-item active">
+      <div class="nav-icon">⌂</div>
+      Home
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">◉</div>
+      Tasks
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">＋</div>
+      Earn
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">▣</div>
+      Wallet
+    </div>
+
+    <div class="nav-item">
+      <div class="nav-icon">●</div>
+      Profile
+    </div>
+  </nav>
+
+</body>
+          </html>
