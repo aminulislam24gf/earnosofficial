@@ -10,444 +10,24 @@
 
   <meta
     name="theme-color"
-    content="#07090d"
+    content="#07090f"
   >
 
-  <title>EARNOS — Earn Something Real</title>
+  <title>EARNOS — Earn Through Verified Opportunities</title>
 
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-    :root {
-      --bg: #07090d;
-      --bg-soft: #0d1017;
-      --card: #11151d;
-      --card-2: #151a23;
-      --line: #252b36;
-      --text: #f5f5fa;
-      --muted: #8d93a6;
-      --purple: #9b5cff;
-      --purple-2: #6d28ff;
-      --green: #57d9b0;
-      --red: #ff667d;
-      --shadow: 0 20px 60px rgba(0, 0, 0, .35);
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html,
-    body {
-      width: 100%;
-      min-height: 100%;
-      background: var(--bg);
-      color: var(--text);
-      font-family:
-        Inter,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
-    }
-
-    body {
-      min-height: 100vh;
-      overflow-x: hidden;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      cursor: pointer;
-    }
-
-    .app {
-      width: 100%;
-      max-width: 760px;
-      min-height: 100vh;
-      margin: auto;
-      position: relative;
-
-      background:
-        radial-gradient(
-          circle at 100% 10%,
-          rgba(126, 67, 255, .14),
-          transparent 30%
-        ),
-        radial-gradient(
-          circle at 0% 40%,
-          rgba(70, 50, 160, .08),
-          transparent 30%
-        ),
-        var(--bg);
-    }
-
-    /* =========================
-       HEADER
-    ========================= */
-
-    header {
-      height: 92px;
-      padding: 20px 20px;
-
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      position: sticky;
-      top: 0;
-      z-index: 20;
-
-      border-bottom: 1px solid rgba(255,255,255,.06);
-
-      background: rgba(7,9,13,.88);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-
-    .logo {
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -1.8px;
-    }
-
-    .logo span {
-      color: var(--purple);
-    }
-
-    .header-actions {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .icon-btn,
-    .avatar-btn {
-      width: 54px;
-      height: 54px;
-
-      border-radius: 18px;
-      border: 1px solid var(--line);
-
-      display: grid;
-      place-items: center;
-
-      color: white;
-      background: #11141c;
-    }
-
-    .icon-btn {
-      font-size: 23px;
-    }
-
-    .avatar-btn {
-      border: 0;
-      font-size: 17px;
-      font-weight: 700;
-
-      background:
-        linear-gradient(
-          135deg,
-          #a269ff,
-          #6825ff
-        );
-    }
-
-    /* =========================
-       MAIN
-    ========================= */
-
-    main {
-      padding: 30px 20px 120px;
-    }
-
-    .welcome {
-      margin-bottom: 25px;
-    }
-
-    .eyebrow {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 8px;
-    }
-
-    .welcome h1 {
-      font-size: 30px;
-      line-height: 1.15;
-      letter-spacing: -.8px;
-    }
-
-    /* =========================
-       BALANCE CARD
-    ========================= */
-
-    .balance-card {
-      padding: 24px;
-      margin-bottom: 22px;
-
-      border: 1px solid var(--line);
-      border-radius: 24px;
-
-      background:
-        linear-gradient(
-          135deg,
-          rgba(155,92,255,.18),
-          rgba(17,21,29,.96)
-        );
-
-      box-shadow: var(--shadow);
-    }
-
-    .balance-label {
-      color: var(--muted);
-      font-size: 14px;
-      margin-bottom: 10px;
-    }
-
-    .balance {
-      font-size: 38px;
-      font-weight: 800;
-      letter-spacing: -1.5px;
-    }
-
-    .balance span {
-      color: var(--purple);
-    }
-
-    .balance-status {
-      margin-top: 14px;
-      color: var(--green);
-      font-size: 13px;
-    }
-
-    /* =========================
-       QUICK STATS
-    ========================= */
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 12px;
-      margin-bottom: 25px;
-    }
-
-    .stat-card {
-      padding: 18px;
-
-      border: 1px solid var(--line);
-      border-radius: 20px;
-
-      background: var(--card);
-    }
-
-    .stat-title {
-      color: var(--muted);
-      font-size: 13px;
-      margin-bottom: 8px;
-    }
-
-    .stat-value {
-      font-size: 21px;
-      font-weight: 700;
-    }
-
-    /* =========================
-       SECTION
-    ========================= */
-
-    .section {
-      margin-top: 28px;
-    }
-
-    .section-head {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-
-      margin-bottom: 13px;
-    }
-
-    .section-head h2 {
-      font-size: 19px;
-    }
-
-    .section-head button {
-      border: 0;
-      background: transparent;
-      color: var(--purple);
-      font-size: 13px;
-    }
-
-    /* =========================
-       EMPTY STATE
-    ========================= */
-
-    .empty-card {
-      padding: 30px 20px;
-
-      text-align: center;
-
-      border: 1px dashed var(--line);
-      border-radius: 20px;
-
-      background: rgba(17,21,29,.7);
-    }
-
-    .empty-icon {
-      font-size: 34px;
-      margin-bottom: 12px;
-    }
-
-    .empty-card h3 {
-      font-size: 17px;
-      margin-bottom: 7px;
-    }
-
-    .empty-card p {
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-
-    /* =========================
-       BOTTOM NAV
-    ========================= */
-
-    .bottom-nav {
-      position: fixed;
-      left: 50%;
-      bottom: 0;
-
-      transform: translateX(-50%);
-
-      width: 100%;
-      max-width: 760px;
-
-      height: 88px;
-
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-
-      padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
-
-      border-top: 1px solid rgba(255,255,255,.07);
-
-      background: rgba(7,9,13,.94);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-
-      z-index: 50;
-    }
-
-    .nav-btn {
-      position: relative;
-
-      border: 0;
-      background: transparent;
-
-      color: #737b8e;
-
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-
-      gap: 6px;
-
-      font-size: 12px;
-    }
-
-    .nav-icon {
-      font-size: 24px;
-      line-height: 1;
-    }
-
-    .nav-btn.active {
-      color: var(--purple);
-    }
-
-    .nav-btn.active::before {
-      content: "";
-
-      position: absolute;
-      top: -8px;
-      left: 25%;
-      right: 25%;
-
-      height: 4px;
-
-      border-radius: 10px;
-
-      background: var(--purple);
-    }
-
-    /* =========================
-       TOAST
-    ========================= */
-
-    .toast {
-      position: fixed;
-
-      left: 50%;
-      bottom: 105px;
-
-      transform: translateX(-50%) translateY(20px);
-
-      padding: 12px 17px;
-
-      border-radius: 12px;
-
-      background: #171c25;
-      border: 1px solid var(--line);
-
-      color: var(--text);
-
-      font-size: 13px;
-
-      opacity: 0;
-      pointer-events: none;
-
-      transition: .25s ease;
-
-      z-index: 100;
-    }
-
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-
-    /* =========================
-       RESPONSIVE
-    ========================= */
-
-    @media (min-width: 700px) {
-      main {
-        padding-left: 30px;
-        padding-right: 30px;
-      }
-
-      .stats {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-  </style>
+  <!-- EARNOS CSS -->
+  <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
 
   <div class="app">
 
-    <!-- HEADER -->
-    <header>
+    <!-- =========================
+         HEADER
+         ========================= -->
+
+    <header class="header">
 
       <div class="logo">
         EARNOS<span>.</span>
@@ -457,7 +37,6 @@
 
         <button
           class="icon-btn"
-          id="notificationBtn"
           type="button"
           aria-label="Notifications"
         >
@@ -466,7 +45,6 @@
 
         <button
           class="avatar-btn"
-          id="profileBtn"
           type="button"
           aria-label="Profile"
         >
@@ -478,10 +56,13 @@
     </header>
 
 
-    <!-- MAIN -->
+    <!-- =========================
+         MAIN CONTENT
+         ========================= -->
+
     <main>
 
-      <section class="welcome">
+      <section class="page-title">
 
         <div class="eyebrow">
           Earn through verified opportunities
@@ -494,86 +75,100 @@
       </section>
 
 
-      <!-- BALANCE -->
-      <section class="balance-card">
+      <!-- Balance -->
+
+      <section class="card balance-card">
 
         <div class="balance-label">
           Available balance
         </div>
 
         <div class="balance">
-          $<span id="balance">0.00</span>
+          <span class="currency">$</span><span
+            class="amount"
+            id="balance"
+          >0.00</span>
         </div>
 
-        <div class="balance-status">
-          ● Account connected
+        <div class="status">
+          Account connected
         </div>
 
       </section>
 
 
-      <!-- STATS -->
-      <section class="stats">
+      <!-- Statistics -->
 
-        <div class="stat-card">
-          <div class="stat-title">
+      <section class="stats-grid">
+
+        <div class="card stat-card">
+
+          <div class="stat-label">
             Tasks
           </div>
 
           <div
             class="stat-value"
-            id="taskCount"
+            id="tasksCount"
           >
             0
           </div>
+
         </div>
 
 
-        <div class="stat-card">
-          <div class="stat-title">
+        <div class="card stat-card">
+
+          <div class="stat-label">
             Submissions
           </div>
 
           <div
             class="stat-value"
-            id="submissionCount"
+            id="submissionsCount"
           >
             0
           </div>
+
         </div>
 
 
-        <div class="stat-card">
-          <div class="stat-title">
+        <div class="card stat-card">
+
+          <div class="stat-label">
             Withdrawals
           </div>
 
           <div
             class="stat-value"
-            id="withdrawalCount"
+            id="withdrawalsCount"
           >
             0
           </div>
+
         </div>
 
 
-        <div class="stat-card">
-          <div class="stat-title">
+        <div class="card stat-card">
+
+          <div class="stat-label">
             Referrals
           </div>
 
           <div
             class="stat-value"
-            id="referralCount"
+            id="referralsCount"
           >
             0
           </div>
+
         </div>
 
       </section>
 
 
-      <!-- OPPORTUNITIES -->
+      <!-- Opportunities -->
+
       <section class="section">
 
         <div class="section-head">
@@ -582,62 +177,28 @@
             Opportunities
           </h2>
 
-          <button
-            type="button"
-            id="viewTasksBtn"
-          >
+          <a href="#" id="viewAll">
             View all
-          </button>
+          </a>
 
         </div>
 
 
-        <div class="empty-card">
+        <div
+          class="card empty-state"
+          id="opportunities"
+        >
 
           <div class="empty-icon">
-            ◈
+            ◇
           </div>
 
           <h3>
-            Opportunities are coming
+            No opportunities yet
           </h3>
 
           <p>
-            Tasks and earning opportunities
-            will appear here once they are available.
-          </p>
-
-        </div>
-
-      </section>
-
-
-      <!-- ACTIVITY -->
-      <section class="section">
-
-        <div class="section-head">
-
-          <h2>
-            Recent activity
-          </h2>
-
-        </div>
-
-
-        <div class="empty-card">
-
-          <div class="empty-icon">
-            ◎
-          </div>
-
-          <h3>
-            No activity yet
-          </h3>
-
-          <p>
-            Your task submissions,
-            earnings and withdrawals
-            will appear here.
+            Verified earning opportunities will appear here.
           </p>
 
         </div>
@@ -647,13 +208,16 @@
     </main>
 
 
-    <!-- BOTTOM NAV -->
+    <!-- =========================
+         BOTTOM NAVIGATION
+         ========================= -->
+
     <nav class="bottom-nav">
 
       <button
-        class="nav-btn active"
-        data-page="home"
+        class="nav-item active"
         type="button"
+        data-page="home"
       >
         <span class="nav-icon">⌂</span>
         <span>Home</span>
@@ -661,9 +225,9 @@
 
 
       <button
-        class="nav-btn"
-        data-page="tasks"
+        class="nav-item"
         type="button"
+        data-page="tasks"
       >
         <span class="nav-icon">☑</span>
         <span>Tasks</span>
@@ -671,19 +235,19 @@
 
 
       <button
-        class="nav-btn"
-        data-page="wallet"
+        class="nav-item"
         type="button"
+        data-page="wallet"
       >
-        <span class="nav-icon">▣</span>
+        <span class="nav-icon">□</span>
         <span>Wallet</span>
       </button>
 
 
       <button
-        class="nav-btn"
-        data-page="profile"
+        class="nav-item"
         type="button"
+        data-page="profile"
       >
         <span class="nav-icon">♙</span>
         <span>Profile</span>
@@ -691,219 +255,29 @@
 
     </nav>
 
+
+    <!-- Toast -->
+
+    <div
+      id="toast"
+      class="toast"
+      aria-live="polite"
+    ></div>
+
   </div>
 
 
-  <!-- TOAST -->
-  <div
-    id="toast"
-    class="toast"
-  ></div>
+  <!-- =========================
+       SUPABASE
+       ========================= -->
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-  <script>
+  <!-- EARNOS Configuration -->
+  <script src="js/config.js"></script>
 
-    /* =====================================================
-       EARNOS — SUPABASE CONFIG
-    ===================================================== */
-
-    const SUPABASE_URL =
-      "https://imiciluejhsoogykhowz.supabase.co";
-
-    /*
-      Publishable key is safe for browser-side use
-      when Row Level Security is configured correctly.
-    */
-
-    const SUPABASE_KEY =
-      "sb_publishable_BgaaOwSY211P93ffLJyeqw_ZBTixIq8";
-
-
-    let supabaseClient = null;
-
-
-    /*
-      Initialize Supabase.
-    */
-
-    try {
-
-      if (
-        window.supabase &&
-        SUPABASE_URL &&
-        SUPABASE_KEY
-      ) {
-
-        supabaseClient =
-          window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_KEY
-          );
-
-      }
-
-    } catch (error) {
-
-      console.error(
-        "Supabase initialization error:",
-        error
-      );
-
-    }
-
-
-    /* =====================================================
-       HELPERS
-    ===================================================== */
-
-    function showToast(message) {
-
-      const toast =
-        document.getElementById("toast");
-
-      toast.textContent = message;
-
-      toast.classList.add("show");
-
-      clearTimeout(
-        window.__toastTimer
-      );
-
-      window.__toastTimer =
-        setTimeout(() => {
-
-          toast.classList.remove("show");
-
-        }, 2500);
-
-    }
-
-
-    /* =====================================================
-       NAVIGATION
-    ===================================================== */
-
-    document
-      .querySelectorAll(".nav-btn")
-      .forEach(button => {
-
-        button.addEventListener(
-          "click",
-          () => {
-
-            const page =
-              button.dataset.page;
-
-            document
-              .querySelectorAll(".nav-btn")
-              .forEach(item => {
-
-                item.classList.remove("active");
-
-              });
-
-            button.classList.add("active");
-
-            if (page === "home") {
-
-              showToast(
-                "Home"
-              );
-
-            }
-
-            if (page === "tasks") {
-
-              showToast(
-                "Tasks section will be connected next"
-              );
-
-            }
-
-            if (page === "wallet") {
-
-              showToast(
-                "Wallet section will be connected next"
-              );
-
-            }
-
-            if (page === "profile") {
-
-              showToast(
-                "Profile section will be connected next"
-              );
-
-            }
-
-          }
-        );
-
-      });
-
-
-    /* =====================================================
-       HEADER ACTIONS
-    ===================================================== */
-
-    document
-      .getElementById("notificationBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          showToast(
-            "No new notifications"
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById("profileBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          showToast(
-            "Profile section will be connected next"
-          );
-
-        }
-      );
-
-
-    document
-      .getElementById("viewTasksBtn")
-      .addEventListener(
-        "click",
-        () => {
-
-          document
-            .querySelector('[data-page="tasks"]')
-            .click();
-
-        }
-      );
-
-
-    /* =====================================================
-       INITIAL STATUS
-    ===================================================== */
-
-    console.log(
-      "EARNOS initialized"
-    );
-
-    console.log(
-      "Supabase client:",
-      supabaseClient
-        ? "connected"
-        : "not initialized"
-    );
-
-  </script>
+  <!-- EARNOS Application -->
+  <script src="js/app.js"></script>
 
 </body>
-    </html>
+</html>
