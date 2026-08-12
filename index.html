@@ -1,0 +1,986 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#090b12">
+  <meta name="color-scheme" content="dark">
+  <meta name="description" content="EARNOS — verified micro-task earning platform.">
+  <title>EARNOS — Earn from verified tasks</title>
+
+  <!-- Telegram Mini App SDK -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    :root{
+      --bg:#080a10;
+      --bg2:#0d1018;
+      --panel:#111520;
+      --panel2:#151a25;
+      --line:rgba(255,255,255,.08);
+      --text:#f7f8fb;
+      --muted:#9299aa;
+      --muted2:#697184;
+      --brand:#8b5cf6;
+      --brand2:#6d3df5;
+      --brand-soft:rgba(139,92,246,.14);
+      --green:#31d49a;
+      --green-soft:rgba(49,212,154,.12);
+      --yellow:#ffc857;
+      --red:#ff5d73;
+      --shadow:0 24px 70px rgba(0,0,0,.35);
+      --radius:24px;
+      --radius-sm:16px;
+      --nav-h:82px;
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    body{min-height:100vh;overflow-x:hidden}
+    button,input,textarea,select{font:inherit}
+    button{border:0;cursor:pointer;color:inherit}
+    a{color:inherit;text-decoration:none}
+
+    .app{
+      width:100%;
+      max-width:560px;
+      min-height:100vh;
+      margin:0 auto;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(139,92,246,.15), transparent 28%),
+        radial-gradient(circle at 0% 28%, rgba(87,106,255,.07), transparent 25%),
+        var(--bg);
+      position:relative;
+    }
+
+    .topbar{
+      position:sticky;top:0;z-index:20;
+      display:flex;align-items:center;justify-content:space-between;
+      padding:calc(13px + env(safe-area-inset-top)) 18px 13px;
+      background:rgba(8,10,16,.78);
+      backdrop-filter:blur(18px);
+      border-bottom:1px solid rgba(255,255,255,.05);
+    }
+    .brand{font-weight:900;letter-spacing:-.05em;font-size:22px}
+    .brand span{color:var(--brand)}
+    .top-actions{display:flex;gap:9px}
+    .icon-btn{
+      width:40px;height:40px;border-radius:14px;
+      background:#151923;border:1px solid var(--line);
+      display:grid;place-items:center;color:#dfe3eb;
+    }
+    .icon-btn svg{width:19px;height:19px}
+
+    main{padding:20px 16px calc(var(--nav-h) + 34px)}
+    .screen{display:none;animation:rise .22s ease}
+    .screen.active{display:block}
+    @keyframes rise{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
+
+    .eyebrow{font-size:12px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+    h1{font-size:34px;line-height:1.03;letter-spacing:-.055em;margin:7px 0 10px}
+    h2{font-size:26px;letter-spacing:-.04em;margin:0}
+    h3{font-size:17px;margin:0}
+    .sub{color:var(--muted);line-height:1.5;margin:0}
+
+    .hero{
+      padding:9px 2px 18px;
+      display:flex;align-items:flex-end;justify-content:space-between;gap:15px
+    }
+    .avatar{
+      width:50px;height:50px;border-radius:17px;display:grid;place-items:center;
+      background:linear-gradient(145deg,#a779ff,#6330e8);
+      font-size:20px;font-weight:900;
+      box-shadow:0 10px 30px rgba(139,92,246,.24);
+      overflow:hidden;
+    }
+    .avatar img{width:100%;height:100%;object-fit:cover}
+
+    .balance-card{
+      position:relative;overflow:hidden;
+      border:1px solid rgba(255,255,255,.09);
+      border-radius:30px;
+      padding:24px;
+      background:
+        radial-gradient(circle at 88% 18%, rgba(160,122,255,.35), transparent 28%),
+        linear-gradient(145deg,#181e2b,#10141d);
+      box-shadow:var(--shadow);
+      margin-bottom:14px;
+    }
+    .balance-card:after{
+      content:"";position:absolute;width:170px;height:170px;border-radius:50%;
+      right:-72px;bottom:-82px;border:1px solid rgba(255,255,255,.07);
+      box-shadow:0 0 0 28px rgba(255,255,255,.02),0 0 0 56px rgba(255,255,255,.015);
+    }
+    .balance-label{color:#aab1c0;font-size:13px}
+    .balance{font-size:46px;font-weight:850;letter-spacing:-.055em;margin:3px 0 18px}
+    .balance-row{display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;padding:8px 10px;
+      border-radius:999px;background:rgba(255,255,255,.06);
+      color:#c7ccda;font-size:12px;font-weight:700
+    }
+    .pill.green{color:#73e7bb;background:var(--green-soft)}
+    .progress-wrap{margin-top:19px}
+    .progress-head{display:flex;justify-content:space-between;color:#8f97a8;font-size:12px;margin-bottom:8px}
+    .progress{height:7px;border-radius:99px;background:#202532;overflow:hidden}
+    .progress i{display:block;height:100%;width:0;background:linear-gradient(90deg,#6d3df5,#ad83ff);border-radius:inherit;transition:width .35s ease}
+
+    .quick-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:12px 0 22px}
+    .quick{
+      padding:17px;border-radius:20px;background:var(--panel);border:1px solid var(--line);
+      min-height:108px;display:flex;flex-direction:column;justify-content:space-between
+    }
+    .quick .qtop{display:flex;align-items:center;justify-content:space-between;color:var(--muted);font-size:12px}
+    .quick strong{font-size:23px;letter-spacing:-.04em}
+    .qicon{width:32px;height:32px;border-radius:11px;display:grid;place-items:center;background:var(--brand-soft);color:#b18bff}
+    .qicon svg{width:17px}
+
+    .section-head{display:flex;justify-content:space-between;align-items:center;margin:5px 0 12px}
+    .section-head button{background:none;color:#a981ff;font-weight:750;font-size:13px}
+
+    .task-card{
+      display:flex;gap:13px;align-items:center;padding:15px;
+      background:linear-gradient(180deg,#121721,#10141d);
+      border:1px solid var(--line);border-radius:20px;margin-bottom:10px;
+      transition:.18s transform,.18s border-color;
+    }
+    .task-card:active{transform:scale(.99)}
+    .task-icon{
+      flex:0 0 48px;width:48px;height:48px;border-radius:15px;
+      display:grid;place-items:center;background:#1b202d;color:#c7b2ff
+    }
+    .task-icon svg{width:23px;height:23px}
+    .task-main{min-width:0;flex:1}
+    .task-title{font-weight:800;font-size:15px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .task-meta{font-size:12px;color:var(--muted);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .task-pay{text-align:right}
+    .task-pay strong{display:block;color:#a77dff;font-size:16px}
+    .task-pay small{display:block;color:#667084;font-size:10px;margin-top:3px}
+
+    .empty{
+      padding:30px 18px;text-align:center;border-radius:22px;
+      border:1px dashed rgba(255,255,255,.12);background:rgba(255,255,255,.02);
+      color:var(--muted)
+    }
+    .empty .big{font-size:30px;margin-bottom:8px}
+    .empty strong{display:block;color:#dfe2e9;margin-bottom:5px}
+
+    .filters{display:flex;gap:8px;overflow:auto;padding:2px 0 13px;scrollbar-width:none}
+    .filters::-webkit-scrollbar{display:none}
+    .filter{white-space:nowrap;padding:9px 12px;border-radius:999px;background:#121620;border:1px solid var(--line);color:#8f97a7;font-size:12px;font-weight:700}
+    .filter.active{background:var(--brand-soft);color:#c0a1ff;border-color:rgba(139,92,246,.25)}
+
+    .wallet-card{
+      padding:23px;border-radius:28px;background:linear-gradient(145deg,#171c29,#0e121a);
+      border:1px solid var(--line);box-shadow:var(--shadow);margin:15px 0
+    }
+    .wallet-balance{font-size:42px;font-weight:850;letter-spacing:-.05em;margin:4px 0 20px}
+    .btn-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .btn{
+      min-height:46px;padding:0 16px;border-radius:15px;font-weight:800;
+      background:#1b202c;border:1px solid var(--line)
+    }
+    .btn.primary{background:linear-gradient(135deg,#8d5bff,#6632e6);border:0;box-shadow:0 10px 24px rgba(109,61,245,.22)}
+    .btn.ghost{background:transparent}
+    .btn:disabled{opacity:.45;cursor:not-allowed}
+
+    .stat-list,.settings-list{
+      background:var(--panel);border:1px solid var(--line);border-radius:22px;overflow:hidden
+    }
+    .stat{
+      display:flex;justify-content:space-between;align-items:center;padding:16px 17px;border-bottom:1px solid var(--line)
+    }
+    .stat:last-child{border-bottom:0}
+    .stat span{color:var(--muted);font-size:13px}.stat strong{font-size:14px}
+
+    .profile-head{
+      text-align:center;padding:23px 18px;border:1px solid var(--line);
+      border-radius:26px;background:linear-gradient(180deg,#151a24,#10141c);margin-bottom:14px
+    }
+    .profile-head .avatar{width:72px;height:72px;margin:0 auto 13px;border-radius:23px;font-size:28px}
+    .profile-name{font-size:21px;font-weight:850;letter-spacing:-.035em}
+    .handle{color:var(--muted);font-size:13px;margin-top:4px}
+    .level-row{display:flex;justify-content:center;gap:8px;margin-top:12px}
+
+    .ref-card{
+      padding:19px;border-radius:22px;background:linear-gradient(145deg,rgba(139,92,246,.16),rgba(139,92,246,.04));
+      border:1px solid rgba(139,92,246,.22);margin:14px 0
+    }
+    .ref-code{display:flex;align-items:center;gap:8px;margin-top:12px}
+    .ref-code input{
+      flex:1;min-width:0;background:#0d1118;border:1px solid var(--line);color:#ddd;
+      border-radius:13px;padding:12px;font-size:13px;outline:none
+    }
+
+    .settings-row{
+      display:flex;align-items:center;justify-content:space-between;gap:12px;
+      padding:16px;border-bottom:1px solid var(--line)
+    }
+    .settings-row:last-child{border-bottom:0}
+    .settings-left{display:flex;align-items:center;gap:12px}
+    .settings-icon{width:37px;height:37px;border-radius:12px;display:grid;place-items:center;background:#1b202c;color:#b08bff}
+    .settings-copy strong{display:block;font-size:14px}.settings-copy span{display:block;color:var(--muted);font-size:11px;margin-top:2px}
+    .switch{width:46px;height:26px;border-radius:999px;background:#2a303c;padding:3px;transition:.2s}
+    .switch i{display:block;width:20px;height:20px;border-radius:50%;background:#fff;transition:.2s}
+    .switch.on{background:var(--brand)}.switch.on i{transform:translateX(20px)}
+
+    .bottom-nav{
+      position:fixed;z-index:30;bottom:0;left:50%;transform:translateX(-50%);
+      width:100%;max-width:560px;height:var(--nav-h);
+      padding:7px 9px calc(7px + env(safe-area-inset-bottom));
+      background:rgba(10,12,18,.9);backdrop-filter:blur(20px);
+      border-top:1px solid rgba(255,255,255,.07);
+      display:grid;grid-template-columns:repeat(4,1fr)
+    }
+    .nav-btn{
+      background:none;color:#5f6778;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      gap:4px;font-size:10px;font-weight:750;position:relative
+    }
+    .nav-btn svg{width:21px;height:21px}
+    .nav-btn.active{color:#ad86ff}
+    .nav-btn.active:before{
+      content:"";position:absolute;top:-7px;width:22px;height:2px;border-radius:4px;background:#8b5cf6
+    }
+
+    .modal{
+      position:fixed;inset:0;z-index:60;display:none;align-items:flex-end;justify-content:center;
+      background:rgba(0,0,0,.66);backdrop-filter:blur(6px)
+    }
+    .modal.show{display:flex}
+    .sheet{
+      width:100%;max-width:560px;max-height:88vh;overflow:auto;
+      background:#10141d;border:1px solid rgba(255,255,255,.08);
+      border-radius:28px 28px 0 0;padding:14px 17px calc(18px + env(safe-area-inset-bottom));
+      box-shadow:0 -25px 80px rgba(0,0,0,.5);animation:sheet .22s ease
+    }
+    @keyframes sheet{from{transform:translateY(35px);opacity:.5}to{transform:none;opacity:1}}
+    .grab{width:42px;height:4px;border-radius:99px;background:#3a414f;margin:2px auto 17px}
+    .sheet-head{display:flex;justify-content:space-between;gap:15px;align-items:flex-start;margin-bottom:17px}
+    .close{width:36px;height:36px;border-radius:12px;background:#1c212c;color:#aeb5c2}
+    .detail-pay{font-size:29px;font-weight:850;color:#ad83ff;margin:4px 0 15px}
+    .detail-box{padding:14px;border-radius:17px;background:#151a24;border:1px solid var(--line);margin-bottom:10px}
+    .detail-box p{margin:7px 0 0;color:#a0a7b5;line-height:1.55;font-size:13px}
+    .input{
+      width:100%;padding:13px 14px;border-radius:14px;background:#0c1017;border:1px solid var(--line);
+      color:#fff;outline:none;margin:7px 0 10px
+    }
+    .notice{font-size:11px;line-height:1.5;color:#778092;margin-top:10px}
+    .toast{
+      position:fixed;z-index:100;left:50%;bottom:96px;transform:translate(-50%,20px);
+      width:min(calc(100% - 28px),500px);padding:13px 15px;border-radius:15px;
+      background:#1b202a;border:1px solid rgba(255,255,255,.1);box-shadow:var(--shadow);
+      color:#e9ebf0;font-size:13px;opacity:0;pointer-events:none;transition:.2s
+    }
+    .toast.show{opacity:1;transform:translate(-50%,0)}
+    .connection{
+      display:flex;align-items:center;gap:8px;padding:9px 11px;border-radius:13px;
+      background:#121720;border:1px solid var(--line);font-size:11px;color:#8d95a5;margin-bottom:14px
+    }
+    .dot{width:7px;height:7px;border-radius:50%;background:#f0a44b}.dot.ok{background:var(--green);box-shadow:0 0 0 4px var(--green-soft)}
+    .dot.bad{background:var(--red)}
+    .loading{
+      min-height:120px;display:grid;place-items:center;color:var(--muted)
+    }
+    .spinner{width:25px;height:25px;border:3px solid #272d39;border-top-color:#9c70ff;border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+
+    @media (min-width:561px){
+      body{padding:0 12px}
+      .app{box-shadow:0 0 90px rgba(0,0,0,.35)}
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <header class="topbar">
+    <div class="brand">EARN<span>OS.</span></div>
+    <div class="top-actions">
+      <button class="icon-btn" id="notifyBtn" aria-label="Notifications">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+      </button>
+      <button class="icon-btn" id="avatarBtn" aria-label="Profile">
+        <span id="miniAvatar">E</span>
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- HOME -->
+    <section class="screen active" id="homeScreen">
+      <div class="connection" id="connectionBar">
+        <span class="dot" id="connectionDot"></span>
+        <span id="connectionText">Connecting to EARNOS…</span>
+      </div>
+
+      <div class="hero">
+        <div>
+          <div class="eyebrow">Welcome back</div>
+          <h1>Let's earn<br><span style="color:#a77dff">something real.</span></h1>
+          <p class="sub" id="homeGreeting">Verified tasks. Clear rewards. No fake balance.</p>
+        </div>
+        <div class="avatar" id="heroAvatar">E</div>
+      </div>
+
+      <div class="balance-card">
+        <div class="balance-label">Available balance</div>
+        <div class="balance" id="homeBalance">$0.00</div>
+        <div class="balance-row">
+          <span class="pill green" id="todayPill">● $0.00 today</span>
+          <span class="pill" id="levelPill">Level 1</span>
+        </div>
+        <div class="progress-wrap">
+          <div class="progress-head"><span>Daily goal</span><span id="goalPct">0%</span></div>
+          <div class="progress"><i id="goalBar"></i></div>
+        </div>
+      </div>
+
+      <div class="quick-grid">
+        <div class="quick">
+          <div class="qtop"><span>Tasks completed</span><span class="qicon">✓</span></div>
+          <strong id="completedCount">0</strong>
+        </div>
+        <div class="quick">
+          <div class="qtop"><span>Current streak</span><span class="qicon">↗</span></div>
+          <strong id="streakCount">0 days</strong>
+        </div>
+      </div>
+
+      <div class="section-head">
+        <h2>For you</h2>
+        <button data-go="tasks">View all</button>
+      </div>
+      <div id="homeTasks"></div>
+    </section>
+
+    <!-- TASKS -->
+    <section class="screen" id="tasksScreen">
+      <div class="eyebrow">Marketplace</div>
+      <h1>Available tasks</h1>
+      <p class="sub">Only tasks returned by the live EARNOS backend are shown.</p>
+
+      <div class="filters" id="filters">
+        <button class="filter active" data-filter="all">All</button>
+        <button class="filter" data-filter="testing">Testing</button>
+        <button class="filter" data-filter="survey">Surveys</button>
+        <button class="filter" data-filter="translation">Language</button>
+        <button class="filter" data-filter="content">Content</button>
+      </div>
+      <div id="taskList"></div>
+    </section>
+
+    <!-- WALLET -->
+    <section class="screen" id="walletScreen">
+      <div class="eyebrow">Money</div>
+      <h1>Wallet</h1>
+      <p class="sub">Your balance comes from verified task completions.</p>
+
+      <div class="wallet-card">
+        <div class="balance-label">Available to withdraw</div>
+        <div class="wallet-balance" id="walletBalance">$0.00</div>
+        <div class="btn-row">
+          <button class="btn primary" id="withdrawBtn">Withdraw</button>
+          <button class="btn" id="historyBtn">History</button>
+        </div>
+        <div class="notice">Minimum withdrawal: <b id="minWithdraw">$5.00</b>. Withdrawals are processed by the connected payment provider.</div>
+      </div>
+
+      <div class="stat-list">
+        <div class="stat"><span>Total earned</span><strong id="totalEarned">$0.00</strong></div>
+        <div class="stat"><span>Today's earnings</span><strong id="walletToday">$0.00</strong></div>
+        <div class="stat"><span>Pending</span><strong id="pendingBalance">$0.00</strong></div>
+        <div class="stat"><span>Completed tasks</span><strong id="walletTasks">0</strong></div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section class="screen" id="profileScreen">
+      <div class="eyebrow">Account</div>
+      <h1>Profile</h1>
+
+      <div class="profile-head">
+        <div class="avatar" id="profileAvatar">E</div>
+        <div class="profile-name" id="profileName">EARNOS User</div>
+        <div class="handle" id="profileHandle">@user</div>
+        <div class="level-row">
+          <span class="pill" id="profileLevel">Level 1</span>
+          <span class="pill" id="profileXP">0 XP</span>
+        </div>
+      </div>
+
+      <div class="stat-list">
+        <div class="stat"><span>Account status</span><strong style="color:#5ee0b1">Active</strong></div>
+        <div class="stat"><span>Tasks completed</span><strong id="profileTasks">0</strong></div>
+        <div class="stat"><span>Current streak</span><strong id="profileStreak">0 days</strong></div>
+        <div class="stat"><span>Member since</span><strong id="memberSince">—</strong></div>
+      </div>
+
+      <div class="ref-card">
+        <div class="eyebrow" style="color:#a77dff">Invite & earn</div>
+        <h3 style="margin-top:6px">Share your referral link</h3>
+        <p class="sub" style="font-size:12px;margin-top:5px">Your referral reward is credited only after the referred user's qualifying activity is verified.</p>
+        <div class="ref-code">
+          <input id="refLink" readonly value="">
+          <button class="btn primary" id="copyRef" style="flex:0 0 auto">Copy</button>
+        </div>
+      </div>
+
+      <div class="settings-list">
+        <div class="settings-row">
+          <div class="settings-left">
+            <div class="settings-icon">⌁</div>
+            <div class="settings-copy"><strong>Notifications</strong><span>Task and payment updates</span></div>
+          </div>
+          <button class="switch on" id="notifySwitch"><i></i></button>
+        </div>
+        <div class="settings-row">
+          <div class="settings-left">
+            <div class="settings-icon">◐</div>
+            <div class="settings-copy"><strong>Telegram haptics</strong><span>Use Telegram native feedback</span></div>
+          </div>
+          <button class="switch on" id="hapticSwitch"><i></i></button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav class="bottom-nav">
+    <button class="nav-btn active" data-screen="home">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"/></svg>
+      Home
+    </button>
+    <button class="nav-btn" data-screen="tasks">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m6 12 4 4 8-9"/><path d="M4 4h16v16H4z"/></svg>
+      Tasks
+    </button>
+    <button class="nav-btn" data-screen="wallet">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="M16 12h5M17 12h.01"/></svg>
+      Wallet
+    </button>
+    <button class="nav-btn" data-screen="profile">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="8" r="4"/><path d="M4 21c.8-4.1 3.4-6 8-6s7.2 1.9 8 6"/></svg>
+      Profile
+    </button>
+  </nav>
+</div>
+
+<div class="modal" id="taskModal">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sheet-head">
+      <div>
+        <div class="eyebrow" id="detailCategory">TASK</div>
+        <h2 id="detailTitle">Task</h2>
+      </div>
+      <button class="close" data-close="taskModal">✕</button>
+    </div>
+    <div class="detail-pay" id="detailPay">$0.00</div>
+    <div class="detail-box"><strong>What you'll do</strong><p id="detailDescription">—</p></div>
+    <div class="detail-box"><strong>Estimated time</strong><p id="detailTime">—</p></div>
+    <button class="btn primary" style="width:100%" id="startTaskBtn">Start task</button>
+    <div class="notice">Task completion is verified server-side. The balance is updated only after successful verification.</div>
+  </div>
+</div>
+
+<div class="modal" id="withdrawModal">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sheet-head">
+      <div><div class="eyebrow">PAYOUT</div><h2>Withdraw</h2></div>
+      <button class="close" data-close="withdrawModal">✕</button>
+    </div>
+    <p class="sub">Choose a connected payout method. The server validates eligibility before creating the payout.</p>
+    <label class="eyebrow" style="display:block;margin-top:18px">Amount</label>
+    <input class="input" id="withdrawAmount" type="number" min="5" step=".01" placeholder="5.00">
+    <label class="eyebrow">Payout method</label>
+    <select class="input" id="withdrawMethod">
+      <option value="telegram">Telegram</option>
+      <option value="paypal">PayPal</option>
+      <option value="usdt">USDT</option>
+    </select>
+    <button class="btn primary" style="width:100%" id="confirmWithdraw">Request withdrawal</button>
+    <div class="notice">No fake success is shown. A withdrawal becomes successful only after the payment provider confirms it.</div>
+  </div>
+</div>
+
+<div class="modal" id="historyModal">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sheet-head"><div><div class="eyebrow">WALLET</div><h2>History</h2></div><button class="close" data-close="historyModal">✕</button></div>
+    <div id="historyList"></div>
+  </div>
+</div>
+
+<div class="modal" id="notifyModal">
+  <div class="sheet">
+    <div class="grab"></div>
+    <div class="sheet-head"><div><div class="eyebrow">UPDATES</div><h2>Notifications</h2></div><button class="close" data-close="notifyModal">✕</button></div>
+    <div class="empty"><div class="big">◌</div><strong id="notificationTitle">No new notifications</strong><span id="notificationText">You'll see verified task, account and payment updates here.</span></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+(() => {
+  "use strict";
+
+  /*
+    EARNOS LIVE FRONTEND
+    --------------------
+    This file intentionally does NOT fabricate balances, tasks, or successful payouts.
+
+    Required backend endpoints:
+      GET  /api/me
+      GET  /api/tasks
+      POST /api/tasks/:id/start
+      POST /api/tasks/:id/submit
+      GET  /api/wallet
+      GET  /api/wallet/history
+      POST /api/wallet/withdraw
+      GET  /api/referral
+
+    Set API_BASE to your production API URL.
+    The backend MUST validate Telegram WebApp initData and all money-changing actions.
+  */
+  const CONFIG = {
+    SUPABASE_URL: "https://imiciluejhsoogykhowz.supabase.co",
+    SUPABASE_KEY: "sb_publishable_BgaaOwSY211P93ffLJyeqw_ZBTixIq8",
+    APP_USERNAME: "EARNOS_BOT",
+    DAILY_GOAL: 10,
+    MIN_WITHDRAW: 5
+  };
+
+  const supabaseClient = window.supabase.createClient(
+    CONFIG.SUPABASE_URL,
+    CONFIG.SUPABASE_KEY
+  );
+
+  const state = {
+    user: null,
+    wallet: {balance:0,total:0,today:0,pending:0,completed:0,minWithdraw:CONFIG.MIN_WITHDRAW},
+    tasks: [],
+    history: [],
+    activeTask: null,
+    filter: "all",
+    telegram: window.Telegram?.WebApp || null,
+    supabaseUser: null
+  };
+
+  const $ = s => document.querySelector(s);
+  const $$ = s => [...document.querySelectorAll(s)];
+
+  function esc(v){
+    return String(v ?? "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  }
+  function money(v){ return "$" + Number(v || 0).toFixed(2); }
+  function initials(name){
+    const n = String(name || "EARNOS User").trim();
+    return n.split(/\s+/).slice(0,2).map(x=>x[0]).join("").toUpperCase() || "E";
+  }
+  function buzz(type="light"){
+    if(!$("#hapticSwitch")?.classList.contains("on")) return;
+    try{
+      if(state.telegram?.HapticFeedback){
+        state.telegram.HapticFeedback.impactOccurred(type === "heavy" ? "medium" : "light");
+      }
+    }catch(_){}
+  }
+  function toast(msg){
+    const t=$("#toast"); t.textContent=msg; t.classList.add("show");
+    clearTimeout(window.__toast); window.__toast=setTimeout(()=>t.classList.remove("show"),2600);
+  }
+
+  function setConnection(kind,text){
+    const d=$("#connectionDot"), c=$("#connectionText");
+    d.className="dot " + (kind || "");
+    c.textContent=text;
+  }
+
+  async function ensureAuth(){
+    const {data:{session}} = await supabaseClient.auth.getSession();
+    if(session?.user) return session.user;
+
+    const {data,error} = await supabaseClient.auth.signInAnonymously();
+    if(error) throw new Error(
+      "Supabase authentication failed. Enable Anonymous sign-ins in Supabase Auth, then reload."
+    );
+    return data.user;
+  }
+
+  async function getCurrentUser(){
+    const user=await ensureAuth();
+    state.supabaseUser=user;
+    return user;
+  }
+
+  async function api(path, options={}){
+    const user=await getCurrentUser();
+    const method=(options.method || "GET").toUpperCase();
+
+    if(path === "/api/me"){
+      const {data:profile,error} = await supabaseClient
+        .from("profiles").select("*").eq("id",user.id).maybeSingle();
+      if(error) throw error;
+      if(!profile) throw new Error("Profile was not created yet. Check the profiles trigger.");
+      return {user:{...profile,id:user.id},wallet:{
+        balance:profile.balance || 0,
+        total:profile.total_earned || 0,
+        today:0,
+        pending:profile.pending_balance || 0,
+        completed:profile.tasks_completed || 0,
+        minWithdraw:CONFIG.MIN_WITHDRAW
+      }};
+    }
+
+    if(path === "/api/tasks"){
+      const {data,error} = await supabaseClient
+        .from("tasks").select("*").eq("status","active").order("created_at",{ascending:false});
+      if(error) throw error;
+      return data || [];
+    }
+
+    if(path === "/api/wallet"){
+      const {data:profile,error} = await supabaseClient
+        .from("profiles").select("balance,total_earned,pending_balance,tasks_completed").eq("id",user.id).single();
+      if(error) throw error;
+
+      const start=new Date(); start.setHours(0,0,0,0);
+      const {data:txs} = await supabaseClient
+        .from("transactions").select("amount,created_at").eq("user_id",user.id).gte("created_at",start.toISOString());
+      const today=(txs||[]).reduce((sum,x)=>sum+(Number(x.amount)||0),0);
+      return {wallet:{
+        balance:profile.balance||0,
+        total:profile.total_earned||0,
+        today,
+        pending:profile.pending_balance||0,
+        completed:profile.tasks_completed||0,
+        minWithdraw:CONFIG.MIN_WITHDRAW
+      }};
+    }
+
+    if(path === "/api/wallet/history"){
+      const [{data:txs,error:e1},{data:wds,error:e2}] = await Promise.all([
+        supabaseClient.from("transactions").select("id,amount,description,type,created_at").eq("user_id",user.id).order("created_at",{ascending:false}),
+        supabaseClient.from("withdrawals").select("id,amount,status,created_at").eq("user_id",user.id).order("created_at",{ascending:false})
+      ]);
+      if(e1) throw e1; if(e2) throw e2;
+      const history=[
+        ...(txs||[]).map(x=>({...x,description:x.description||x.type||"Transaction"})),
+        ...(wds||[]).map(x=>({id:"w-"+x.id,amount:-Math.abs(Number(x.amount)||0),description:"Withdrawal · "+(x.status||"pending"),created_at:x.created_at}))
+      ].sort((a,b)=>new Date(b.created_at)-new Date(a.created_at));
+      return history;
+    }
+
+    if(path.startsWith("/api/tasks/") && path.endsWith("/start") && method === "POST"){
+      const id=decodeURIComponent(path.split("/")[3]);
+      const {data:task,error} = await supabaseClient.from("tasks").select("*").eq("id",id).single();
+      if(error) throw error;
+      return {task_url:task.task_url || null,redirect_url:task.task_url || null};
+    }
+
+    if(path === "/api/wallet/withdraw" && method === "POST"){
+      const body=JSON.parse(options.body||"{}");
+      const amount=Number(body.amount);
+      const methodName=String(body.payment_method||"").trim();
+      if(!amount || amount < CONFIG.MIN_WITHDRAW) throw new Error(`Minimum withdrawal is $${CONFIG.MIN_WITHDRAW.toFixed(2)}.`);
+      if(!methodName) throw new Error("Select a payment method.");
+
+      const {data:profile,error:pErr}=await supabaseClient.from("profiles").select("balance").eq("id",user.id).single();
+      if(pErr) throw pErr;
+      if(amount > Number(profile.balance||0)) throw new Error("Insufficient available balance.");
+
+      const {data,error} = await supabaseClient.from("withdrawals").insert({
+        user_id:user.id, amount, payment_method:methodName, status:"pending"
+      }).select("*").single();
+      if(error) throw error;
+      return {withdrawal:data,message:"Withdrawal request submitted for verification."};
+    }
+
+    throw new Error(`Unsupported request: ${method} ${path}`);
+  }
+
+  function navigate(screen){
+    $$(".screen").forEach(x=>x.classList.toggle("active", x.id === screen+"Screen"));
+    $$(".nav-btn").forEach(x=>x.classList.toggle("active", x.dataset.screen===screen));
+    window.scrollTo({top:0,behavior:"smooth"});
+    buzz("light");
+    if(screen==="tasks") loadTasks();
+    if(screen==="wallet") loadWallet();
+    if(screen==="profile") renderProfile();
+  }
+
+  function renderUser(){
+    const u=state.user || {};
+    const name=u.name || [u.first_name,u.last_name].filter(Boolean).join(" ") || "EARNOS User";
+    const handle=u.username ? "@"+u.username : "@user";
+    const ini=initials(name);
+
+    ["miniAvatar","heroAvatar","profileAvatar"].forEach(id=>{
+      const el=$("#"+id); if(!el) return;
+      if(u.photo_url){
+        el.innerHTML=`<img src="${esc(u.photo_url)}" alt="">`;
+      }else el.textContent=ini;
+    });
+    $("#homeGreeting").textContent = `Welcome, ${name.split(" ")[0]}. Verified tasks. Clear rewards.`;
+    $("#profileName").textContent=name;
+    $("#profileHandle").textContent=handle;
+    $("#profileLevel").textContent=`Level ${u.level || 1}`;
+    $("#profileXP").textContent=`${u.xp || 0} XP`;
+    $("#profileTasks").textContent=u.tasks_completed ?? state.wallet.completed ?? 0;
+    $("#profileStreak").textContent=`${u.streak_days ?? 0} days`;
+    $("#streakCount").textContent=`${u.streak_days ?? 0} days`;
+    $("#memberSince").textContent=u.created_at ? new Date(u.created_at).toLocaleDateString() : "—";
+
+    const code=u.referral_code || "";
+    const link=code ? `https://t.me/${CONFIG.APP_USERNAME}?start=ref_${encodeURIComponent(code)}` : "";
+    $("#refLink").value=link;
+  }
+
+  function renderWallet(){
+    const w=state.wallet || {};
+    $("#homeBalance").textContent=money(w.balance);
+    $("#walletBalance").textContent=money(w.balance);
+    $("#totalEarned").textContent=money(w.total);
+    $("#walletToday").textContent=money(w.today);
+    $("#pendingBalance").textContent=money(w.pending);
+    $("#walletTasks").textContent=w.completed || 0;
+    $("#completedCount").textContent=w.completed || 0;
+    $("#todayPill").textContent=`● ${money(w.today)} today`;
+    $("#minWithdraw").textContent=money(w.minWithdraw || CONFIG.MIN_WITHDRAW);
+
+    const pct=Math.min(100, Math.max(0, ((Number(w.today)||0)/CONFIG.DAILY_GOAL)*100));
+    $("#goalPct").textContent=Math.round(pct)+"%";
+    $("#goalBar").style.width=pct+"%";
+  }
+
+  function taskIcon(category){
+    const icons={
+      testing:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="m9 3 6 0"/><path d="M10 3v6l-5 8a3 3 0 0 0 2.6 4.5h8.8A3 3 0 0 0 19 17l-5-8V3"/><path d="M8 15h8"/></svg>',
+      survey:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M8 8h8M8 12h8M8 16h5"/></svg>',
+      translation:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.2 2.5 3.3 5.5 3.3 9s-1.1 6.5-3.3 9c-2.2-2.5-3.3-5.5-3.3-9S9.8 5.5 12 3z"/></svg>',
+      content:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v14H4z"/><path d="m7 15 3-3 2 2 2-3 3 4"/></svg>',
+      other:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>'
+    };
+    return icons[category] || icons.other;
+  }
+
+  function taskCard(t){
+    const pay=money(t.reward);
+    return `
+      <button class="task-card" data-task-id="${esc(t.id)}">
+        <span class="task-icon">${taskIcon(t.category)}</span>
+        <span class="task-main">
+          <span class="task-title">${esc(t.title)}</span>
+          <span class="task-meta">${esc(t.duration_minutes ?? "—")} min · ${esc(t.label || t.category || "Task")}</span>
+        </span>
+        <span class="task-pay"><strong>+${pay}</strong><small>${t.status==="hot"?"HIGH DEMAND":"VERIFIED"}</small></span>
+      </button>`;
+  }
+
+  function renderTasks(target, list){
+    const el=$(target);
+    if(!list.length){
+      el.innerHTML=`<div class="empty"><div class="big">◌</div><strong>No live tasks available</strong><span>New verified tasks will appear here when the task provider supplies them.</span></div>`;
+      return;
+    }
+    el.innerHTML=list.map(taskCard).join("");
+    el.querySelectorAll("[data-task-id]").forEach(btn=>{
+      btn.addEventListener("click",()=>openTask(btn.dataset.taskId));
+    });
+  }
+
+  function filteredTasks(){
+    if(state.filter==="all") return state.tasks;
+    return state.tasks.filter(t=>String(t.category||"").toLowerCase()===state.filter);
+  }
+
+  async function loadTasks(){
+    $("#taskList").innerHTML=`<div class="loading"><div class="spinner"></div></div>`;
+    try{
+      const data=await api("/api/tasks");
+      state.tasks=Array.isArray(data) ? data : (data.tasks || []);
+      renderTasks("#taskList",filteredTasks());
+      renderTasks("#homeTasks",state.tasks.slice(0,3));
+      setConnection("ok","Live Supabase connected");
+    }catch(err){
+      state.tasks=[];
+      renderTasks("#taskList",[]);
+      renderTasks("#homeTasks",[]);
+      setConnection("bad","Supabase connection unavailable — no fake tasks shown");
+    }
+  }
+
+  async function loadWallet(){
+    try{
+      const data=await api("/api/wallet");
+      state.wallet={...state.wallet,...(data.wallet || data)};
+      renderWallet();
+    }catch(err){
+      toast("Wallet could not be refreshed.");
+    }
+  }
+
+  async function loadHistory(){
+    $("#historyList").innerHTML=`<div class="loading"><div class="spinner"></div></div>`;
+    try{
+      const data=await api("/api/wallet/history");
+      state.history=Array.isArray(data) ? data : (data.history || []);
+      if(!state.history.length){
+        $("#historyList").innerHTML=`<div class="empty"><strong>No transactions yet</strong><span>Your verified earnings and withdrawals will appear here.</span></div>`;
+        return;
+      }
+      $("#historyList").innerHTML=state.history.map(x=>`
+        <div class="stat">
+          <span>${esc(x.description || x.type || "Transaction")}<small style="display:block;color:#687184;margin-top:3px">${x.created_at?new Date(x.created_at).toLocaleString():""}</small></span>
+          <strong style="color:${Number(x.amount)>=0?"#65ddb0":"#ff8193"}">${Number(x.amount)>=0?"+":""}${money(x.amount)}</strong>
+        </div>`).join("");
+    }catch(err){
+      $("#historyList").innerHTML=`<div class="empty"><strong>Could not load history</strong><span>${esc(err.message)}</span></div>`;
+    }
+  }
+
+  async function loadMe(){
+    try{
+      const data=await api("/api/me");
+      state.user=data.user || data;
+      state.wallet={...state.wallet,...(data.wallet||{})};
+      renderUser(); renderWallet();
+      setConnection("ok","Live Supabase account connected");
+      return true;
+    }catch(err){
+      setConnection("bad","Supabase account connection unavailable");
+      return false;
+    }
+  }
+
+  function openTask(id){
+    const t=state.tasks.find(x=>String(x.id)===String(id));
+    if(!t) return;
+    state.activeTask=t;
+    $("#detailCategory").textContent=(t.category || "TASK").toUpperCase();
+    $("#detailTitle").textContent=t.title || "Task";
+    $("#detailPay").textContent="+"+money(t.reward);
+    $("#detailDescription").textContent=t.description || "Follow the task instructions exactly. Your submission is verified before any reward is credited.";
+    $("#detailTime").textContent=(t.duration_minutes ?? "—")+" minutes";
+    $("#startTaskBtn").disabled=false;
+    $("#startTaskBtn").textContent="Start task";
+    $("#taskModal").classList.add("show");
+    buzz("light");
+  }
+
+  async function startTask(){
+    const t=state.activeTask;
+    if(!t) return;
+    const btn=$("#startTaskBtn");
+    btn.disabled=true; btn.textContent="Starting…";
+    try{
+      const data=await api(`/api/tasks/${encodeURIComponent(t.id)}/start`,{method:"POST",body:JSON.stringify({})});
+      if(data.redirect_url){
+        window.location.href=data.redirect_url;
+        return;
+      }
+      if(data.task_url){
+        window.open(data.task_url,"_blank","noopener");
+      }
+      btn.textContent="Task started";
+      toast("Task started. Complete it and submit through the verified flow.");
+      buzz("heavy");
+    }catch(err){
+      btn.disabled=false; btn.textContent="Start task";
+      toast(err.message || "Could not start task.");
+    }
+  }
+
+  async function withdraw(){
+    const amount=Number($("#withdrawAmount").value);
+    const method=$("#withdrawMethod").value;
+    const min=Number(state.wallet.minWithdraw || CONFIG.MIN_WITHDRAW);
+    if(!amount || amount<min) return toast(`Minimum withdrawal is ${money(min)}.`);
+    if(amount>Number(state.wallet.balance||0)) return toast("Insufficient available balance.");
+
+    const btn=$("#confirmWithdraw");
+    btn.disabled=true; btn.textContent="Submitting…";
+    try{
+      const data=await api("/api/wallet/withdraw",{method:"POST",body:JSON.stringify({amount,payment_method:method})});
+      closeModal("withdrawModal");
+      toast(data.message || "Withdrawal request submitted for verification.");
+      await loadWallet();
+    }catch(err){
+      toast(err.message || "Withdrawal could not be created.");
+    }finally{
+      btn.disabled=false; btn.textContent="Request withdrawal";
+    }
+  }
+
+  function closeModal(id){ $("#"+id)?.classList.remove("show"); }
+
+  function renderProfile(){ renderUser(); renderWallet(); }
+
+  function initTelegram(){
+    if(!state.telegram) return;
+    try{
+      state.telegram.ready();
+      state.telegram.expand();
+      if(state.telegram.setHeaderColor) state.telegram.setHeaderColor("#080a10");
+      if(state.telegram.setBackgroundColor) state.telegram.setBackgroundColor("#080a10");
+      if(state.telegram.disableVerticalSwipes) state.telegram.disableVerticalSwipes();
+    }catch(_){}
+    const u=state.telegram.initDataUnsafe?.user;
+    if(u){
+      state.user={
+        id:u.id, first_name:u.first_name, last_name:u.last_name, username:u.username,
+        photo_url:u.photo_url, name:[u.first_name,u.last_name].filter(Boolean).join(" ")
+      };
+      renderUser();
+    }
+  }
+
+  // Navigation
+  $$(".nav-btn").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.screen)));
+  $$("[data-go]").forEach(btn=>btn.addEventListener("click",()=>navigate(btn.dataset.go)));
+
+  // Filters
+  $$("#filters .filter").forEach(btn=>btn.addEventListener("click",()=>{
+    $$("#filters .filter").forEach(x=>x.classList.remove("active"));
+    btn.classList.add("active");
+    state.filter=btn.dataset.filter;
+    renderTasks("#taskList",filteredTasks());
+  }));
+
+  // Modals
+  $$(".close").forEach(b=>b.addEventListener("click",()=>closeModal(b.dataset.close)));
+  $$(".modal").forEach(m=>m.addEventListener("click",e=>{if(e.target===m)m.classList.remove("show")}));
+  $("#startTaskBtn").addEventListener("click",startTask);
+  $("#withdrawBtn").addEventListener("click",()=>{
+    const min=Number(state.wallet.minWithdraw || CONFIG.MIN_WITHDRAW);
+    $("#withdrawAmount").min=min;
+    $("#withdrawAmount").placeholder=min.toFixed(2);
+    $("#withdrawModal").classList.add("show");
+  });
+  $("#confirmWithdraw").addEventListener("click",withdraw);
+  $("#historyBtn").addEventListener("click",()=>{ $("#historyModal").classList.add("show"); loadHistory(); });
+  $("#notifyBtn").addEventListener("click",()=>$("#notifyModal").classList.add("show"));
+  $("#avatarBtn").addEventListener("click",()=>navigate("profile"));
+
+  $("#copyRef").addEventListener("click",async()=>{
+    const v=$("#refLink").value;
+    if(!v) return toast("Referral link is not available yet.");
+    try{await navigator.clipboard.writeText(v);toast("Referral link copied.");}
+    catch(_){$("#refLink").select();document.execCommand("copy");toast("Referral link copied.");}
+  });
+
+  function setupSwitch(id){
+    const el=$("#"+id); if(!el)return;
+    el.addEventListener("click",()=>{el.classList.toggle("on");buzz("light")});
+  }
+  setupSwitch("notifySwitch"); setupSwitch("hapticSwitch");
+
+  // Initial state: zero until live server responds.
+  renderWallet();
+  initTelegram();
+  loadMe().finally(()=>loadTasks());
+})();
+</script>
+</body>
+</html>
