@@ -1,0 +1,86 @@
+/* =========================================
+   EARNOS - RESPONSIVE STYLES
+   ========================================= */
+
+@media (max-width: 760px) {
+
+  .app {
+    width: 100%;
+    min-height: 100vh;
+  }
+
+  header {
+    height: 78px;
+    padding: 15px 18px;
+  }
+
+  .logo {
+    font-size: 24px;
+  }
+
+  main {
+    padding: 25px 16px 110px;
+  }
+
+  .hero {
+    padding: 20px 0;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+    line-height: 1.15;
+  }
+
+  .hero p {
+    font-size: 16px;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .balance-card {
+    padding: 22px;
+  }
+
+  .balance {
+    font-size: 42px;
+  }
+
+  .opportunities-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .bottom-nav {
+    height: 72px;
+  }
+
+  .nav-item {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 420px) {
+
+  .stats-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .hero h1 {
+    font-size: 30px;
+  }
+
+  .balance {
+    font-size: 36px;
+  }
+
+  .card {
+    padding: 15px;
+  }
+}
